@@ -10,23 +10,28 @@ namespace Blackout.View
     public class GameView : IView
     {
         /// <summary>
-        /// Draws the game board to the console. Each cell is represented as "[X]" if true (lit) and "[ ]" if false (unlit).
+        /// Draws the game board to the console, using different colors for cells. ON (yellow) and OFF (grey).
         /// </summary>
-        /// <param name="aBoard"></param>
-        public void DrawBoard (Grid grid)
+        /// <param name="grid"></param>
+        public void DrawBoard (Grid grid, int selectedRow, int selectedCol)
         {
+            AnsiConsole.WriteLine();
+
             for(int row = 0; row < grid.Rows; row++)
             {
                 for(int col = 0; col < grid.Columns; col++)
                 {
                     Cell cell = grid.GetCell(row, col);
-                    if (cell.State == CellState.ON)
+                    if (row == selectedRow && col == selectedCol)
+                        AnsiConsole.Markup("[red]■ [/]");
+                    else if (cell.State == CellState.ON)
                         AnsiConsole.Markup("[yellow]■ [/]");
                     else
                         AnsiConsole.Markup("[grey]■ [/]");
                 }
-                Console.WriteLine();
+                AnsiConsole.WriteLine();
             }
+            AnsiConsole.WriteLine();
         }
 
         /// <summary>
@@ -34,9 +39,17 @@ namespace Blackout.View
         /// </summary>
         public void ShowMenu()
         {
-            Console.WriteLine("==== BLACKOUT ===");
-            Console.WriteLine("1 - Start Game");
-            Console.WriteLine("2 - Exit");
+            Panel panel = new Panel("[bold green]BLACKOUT[/]")
+                .Border(BoxBorder.Double)
+                .Padding(1, 1)
+                .Expand();
+
+            AnsiConsole.Write(panel);
+
+            AnsiConsole.WriteLine();
+
+            AnsiConsole.MarkupLine("[cyan]1[/] - Start New Game");
+            AnsiConsole.MarkupLine("[cyan]2[/] - Exit");
         }
 
         /// <summary>
@@ -47,14 +60,15 @@ namespace Blackout.View
         /// </returns>
         public int SelectDifficulty()
         {
-            Console.WriteLine("1 - Easy (3x3)");
-            Console.WriteLine("2 - Medium (5x5)");
-            Console.WriteLine("3 - Hard (8x8)");
+            string choice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Select [green]difficulty[/]:")
+                    .AddChoices("1 - Easy (3x3)", "2 - Medium (5x5)", "3 - Hard (8x8)")
+            );
 
-            int choice = int.Parse(Console.ReadLine());
-            if (choice == 1) return 3;
-            if (choice == 2) return 5;
-            if (choice == 3) return 8;
+            if (choice == "1 - Easy (3x3)") return 3;
+            if (choice == "2 - Medium (5x5)") return 5;
+            if (choice == "3 - Hard (8x8)") return 8;
 
             Console.WriteLine("Invalid choice. Defaulting to Easy.");
             return 3;
@@ -65,7 +79,11 @@ namespace Blackout.View
         /// </summary>
         public void ShowVictory()
         {
-            AnsiConsole.MarkupLine("[green]Victory![/]");
+            AnsiConsole.Write(
+                new Panel("[bold green]Victory![/]")
+                    .Border(BoxBorder.Double)
+                    .Padding(2, 1)
+            );
         }
 
         /// <summary>
@@ -76,12 +94,9 @@ namespace Blackout.View
         /// </returns>
         public (int row, int col) AskCoordinates()
         {
-            Console.Write("Row: ");
-            int row = int.Parse(Console.ReadLine());
+            int row = AnsiConsole.Ask<int>("Row:");
+            int col = AnsiConsole.Ask<int>("Col:");
 
-            Console.Write("Col: ");
-            int col = int.Parse(Console.ReadLine());
-            
             return (row, col);
         }
     }

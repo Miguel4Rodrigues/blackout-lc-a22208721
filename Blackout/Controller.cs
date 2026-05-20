@@ -10,7 +10,8 @@ namespace Blackout
     public class Controller
     {
         private Grid grid;
-
+        private int selectedRow = -1;
+        private int selectedCol = -1;
         /// <summary>
         /// Runs the main game loop until the victory condition is met.
         /// </summary>
@@ -32,7 +33,7 @@ namespace Blackout
             // Main game loop
             do
             {
-                view.DrawBoard(grid);
+                view.DrawBoard(grid, selectedRow, selectedCol);
                 (int row, int col) = view.AskCoordinates();
 
                 // Validate coordinates
@@ -41,6 +42,9 @@ namespace Blackout
                     //view.ShowInvalidMessage("Invalid Coordinates!");
                     (row, col) = view.AskCoordinates();
                 }
+                selectedRow = row;
+                selectedCol = col;
+
                 grid.ToggleVonNeumann(row, col);
 
             }while (!grid.IsVictory());
