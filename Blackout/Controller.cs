@@ -1,0 +1,78 @@
+using System;
+
+namespace Blackout
+{
+    /// <summary>
+    /// Controls the game flow and coordinates interaction between
+    /// the Model (Grid) and the View.
+    /// </summary>
+    public class Controller
+    {
+        private Grid grid;
+
+        /// <summary>
+        /// Runs the main game loop until the victory condition is met.
+        /// </summary>
+        public void Run(/* IView view */)
+        {
+            // Ask the user for the grid size
+            //int size = view.MenuView();
+
+            // Validate size (must be 3, 5 or 8)
+            /* while (size != 3 && size != 5 && size != 8)
+            {
+                view.ShowInvalidMessage("Invalid Size!");
+                //size = view.MenuView();
+            }*/
+
+            //CreateGrid(size);
+
+            // Main game loop
+            do
+            {
+                //view.ShowGrid(grid);
+                //(int row, int col) = view.AskPlayerCoordinates();
+
+                /* Validate coordinates
+                while (row < 0 || row >= size || col < 0 || col >= size)
+                {
+                    view.ShowInvalidMessage("Invalid Coordinates!");
+                    (row, col) = view.AskPlayerCoordinates();
+                }
+                grid.ToggleVonNeumann(row, col);*/
+
+            }while (!grid.IsVictory());
+
+            //view.ShowVictoryMessage();
+        }
+
+        /// <summary>
+        /// Creates a new square grid with the specified size and initializes it
+        /// with a random starting pattern according to the difficulty level.
+        /// </summary>
+        /// <param name="size">
+        /// The dimension of the grid (number of rows and columns).
+        /// Supported sizes: 3x3, 5x5, and 8x8.
+        /// </param>
+        public void CreateGrid(int size)
+        {
+            grid = new Grid(size, size);
+
+            int clicks = 3;
+            switch (size)
+            {
+                case 5:
+                    clicks = 5;
+                    break;
+                case 8:
+                    clicks = 8;
+                    break;
+                default:
+                    clicks = 3;
+                    break;
+            };
+
+            grid.ApplyRandomClicks(clicks);
+        }
+    }
+}

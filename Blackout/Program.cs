@@ -10,17 +10,14 @@ namespace Blackout
         /// <param name="args">Not used</param>
         private static void Main(string[] args)
         {
-            // Create Model (class Cells or Grid)
-            // Grid grid = new grid();
-
             // Create Controller
-            // Controller controller = new Controller();
+            Controller controller = new Controller();
 
             // Create View
             // IView view = new (nome da View);
 
             // Initialize controller
-            // controller.Run();
+            controller.Run(/*view*/);
         }
     }
 }
