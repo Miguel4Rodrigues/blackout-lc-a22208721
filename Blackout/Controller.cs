@@ -2,30 +2,37 @@ using System;
 
 namespace Blackout
 {
+    /// <summary>
+    /// Controls the game flow and coordinates interaction between
+    /// the Model (Grid) and the View.
+    /// </summary>
     public class Controller
     {
-        /// <summary>
-        /// Run the program
-        /// </summary>
-        public void Run()
-        {
-            /*
-            // We keep the user's option here
-            string option;
+        private Grid grid;
 
-            // Main program loop
-            
+        /// <summary>
+        /// Runs the main game loop until the victory condition is met.
+        /// </summary>
+        public void Run(/* IView view*/)
+        {
+            //int size = view.MenuView();
+            //if (size != null) CreateGrid(size);
+
+            // Main game loop
             do
             {
-                
-            } while( option) // Jogo termina apenas quando todas as células se encontram desligadas
-            */
+                //view.ShowGrid(grid);
+
+            }while (!grid.IsVictory());
         }
 
+        /// <summary>
+        /// Creates a new square grid with specified size.
+        /// </summary>
+        /// <param name="size">Number of rows and columns of the grid.</param>
         public void CreateGrid(int size)
         {
-            // Create Model (class Cells or Grid)
-            Grid grid = new Grid(size, size);
+            grid = new Grid(size, size);
         }
     }
 }

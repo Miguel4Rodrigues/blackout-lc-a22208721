@@ -11,13 +11,13 @@ namespace Blackout
         private static void Main(string[] args)
         {
             // Create Controller
-            // Controller controller = new Controller();
+            Controller controller = new Controller();
 
             // Create View
             // IView view = new (nome da View);
 
             // Initialize controller
-            // controller.Run();
+            controller.Run(/*view*/);
         }
     }
 }
