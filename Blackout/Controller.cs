@@ -1,4 +1,5 @@
 using System;
+using Blackout.View;
 
 namespace Blackout
 {
@@ -13,37 +14,38 @@ namespace Blackout
         /// <summary>
         /// Runs the main game loop until the victory condition is met.
         /// </summary>
-        public void Run(/* IView view */)
+        public void Run(IView view)
         {
+            view.ShowMenu();
             // Ask the user for the grid size
-            //int size = view.MenuView();
+            int size = view.SelectDifficulty();
 
             // Validate size (must be 3, 5 or 8)
-            /* while (size != 3 && size != 5 && size != 8)
+            while (size != 3 && size != 5 && size != 8)
             {
-                view.ShowInvalidMessage("Invalid Size!");
-                //size = view.MenuView();
-            }*/
+                //view.ShowInvalidMessage("Invalid Size!");
+                size = view.SelectDifficulty();
+            }
 
-            //CreateGrid(size);
+            CreateGrid(size);
 
             // Main game loop
             do
             {
-                //view.ShowGrid(grid);
-                //(int row, int col) = view.AskPlayerCoordinates();
+                view.DrawBoard(grid);
+                (int row, int col) = view.AskCoordinates();
 
-                /* Validate coordinates
+                // Validate coordinates
                 while (row < 0 || row >= size || col < 0 || col >= size)
                 {
-                    view.ShowInvalidMessage("Invalid Coordinates!");
-                    (row, col) = view.AskPlayerCoordinates();
+                    //view.ShowInvalidMessage("Invalid Coordinates!");
+                    (row, col) = view.AskCoordinates();
                 }
-                grid.ToggleVonNeumann(row, col);*/
+                grid.ToggleVonNeumann(row, col);
 
             }while (!grid.IsVictory());
 
-            //view.ShowVictoryMessage();
+            view.ShowVictory();
         }
 
         /// <summary>

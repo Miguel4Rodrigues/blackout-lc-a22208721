@@ -1,4 +1,5 @@
 ﻿using System;
+using Blackout.View;
 
 namespace Blackout
 {
@@ -14,10 +15,10 @@ namespace Blackout
             Controller controller = new Controller();
 
             // Create View
-            // IView view = new (nome da View);
+            IView view = new GameView();
 
             // Initialize controller
-            controller.Run(/*view*/);
+            controller.Run(view);
         }
     }
 }

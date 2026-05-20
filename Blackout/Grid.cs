@@ -109,5 +109,10 @@ namespace Blackout
 
             return true;
         }
+        
+        public Cell GetCell(int row, int col)
+        {
+            return cells[row, col];
+        }
     }
 }

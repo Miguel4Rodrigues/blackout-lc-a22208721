@@ -5,7 +5,7 @@ namespace Blackout.View
 {
     public interface IView
     {
-        void DrawBoard(bool[,] aBoard);
+        void DrawBoard(Grid grid);
         int SelectDifficulty();
         void ShowVictory();
         void ShowMenu();

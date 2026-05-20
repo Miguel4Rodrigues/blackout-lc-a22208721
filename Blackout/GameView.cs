@@ -13,15 +13,14 @@ namespace Blackout.View
         /// Draws the game board to the console. Each cell is represented as "[X]" if true (lit) and "[ ]" if false (unlit).
         /// </summary>
         /// <param name="aBoard"></param>
-        public void DrawBoard (bool[,] aBoard)
+        public void DrawBoard (Grid grid)
         {
-            int size = aBoard.GetLength(0);
-
-            for(int row = 0; row < size; row++)
+            for(int row = 0; row < grid.Rows; row++)
             {
-                for(int col = 0; col < size; col++)
+                for(int col = 0; col < grid.Columns; col++)
                 {
-                    if (aBoard[row, col])
+                    Cell cell = grid.GetCell(row, col);
+                    if (cell.State == CellState.ON)
                         AnsiConsole.Markup("[yellow]■ [/]");
                     else
                         AnsiConsole.Markup("[grey]■ [/]");
@@ -35,9 +34,9 @@ namespace Blackout.View
         /// </summary>
         public void ShowMenu()
         {
-                Console.WriteLine("==== BLACKOUT ===");
-                Console.WriteLine("1 - Start Game");
-                Console.WriteLine("2 - Exit");
+            Console.WriteLine("==== BLACKOUT ===");
+            Console.WriteLine("1 - Start Game");
+            Console.WriteLine("2 - Exit");
         }
 
         /// <summary>
