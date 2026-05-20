@@ -42,6 +42,24 @@ namespace Blackout
                 }
             }
         }
+
+        /// <summary>
+        /// Applies a number of random toggles to generate the initial 
+        /// puzzle state.
+        /// </summary>
+        /// <param name="clicks">Number of random clicks to apply.</param>
+        public void ApplyRandomClicks(int clicks)
+        {
+            Random rnd = new Random();
+
+            for (int i = 0; i < clicks; i++)
+            {
+                int r = rnd.Next(Rows);
+                int c = rnd.Next(Columns);
+
+                ToggleVonNeumann(r, c);
+            }
+        }
         
         /// <summary>
         /// Toggle the state of the selected cell and its 
@@ -53,7 +71,7 @@ namespace Blackout
         {
             // Toggle the cell itself
             Toggle(row, column);
-            
+
             // Toggle neighbors
             Toggle(row - 1, column); // UP
             Toggle(row + 1, column); // DOWN
