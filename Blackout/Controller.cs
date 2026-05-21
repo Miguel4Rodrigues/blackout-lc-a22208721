@@ -23,19 +23,18 @@ namespace Blackout
             size = GetGameSize(view);
             if (size == -1) return;
 
-            CreateGrid(size);                
-            //view.DrawBoard(grid, selectedRow, selectedCol); // REMOVER
+            CreateGrid(size);
+            //view.StartGrid(grid);
 
-            /*// Main game loop
+            // Main game loop
             do
             {   
-                ConsoleKey key = Console.ReadKey(true).Key; // CRIAR MÉTODO NA VIEW que retorna a key (ou seja lê a tecla que o utilizador selecionou)
-                HandleInput(view.ReadKey());
+                view.UpdateGrid(grid, selectedRow, selectedCol); 
+                /*ConsoleKey key = Console.ReadKey(true).Key; // CRIAR MÉTODO NA VIEW que retorna a key (ou seja lê a tecla que o utilizador selecionou)
+                HandleInput(key);*/
 
-                // ATUALIZAR A VIEW DA GRID (Usar canvas)
-                view.RunLiveGame();
 
-            }while (!grid.IsVictory());*/
+            }while (!grid.IsVictory());
 
             view.ShowVictory();
         }
