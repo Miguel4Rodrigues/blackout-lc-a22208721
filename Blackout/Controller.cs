@@ -17,8 +17,21 @@ namespace Blackout
         /// </summary>
         public void Run(IView view)
         {
-            view.ShowMenu();
-            // Ask the user for the grid size
+            /*int option = view.ShowMenu();
+            switch (option)
+            {
+                case 1:
+                default:
+                    // Ask the user for the grid size
+                    //int size = view.SelectDifficulty();
+                    break;
+                case 2:
+                    //view.ExitMessage();
+                    break;
+
+            }*/
+
+            
             int size = view.SelectDifficulty();
 
             // Validate size (must be 3, 5 or 8)
