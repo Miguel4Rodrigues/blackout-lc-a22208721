@@ -30,10 +30,8 @@ namespace Blackout
             do
             {   
                 view.UpdateGrid(grid, selectedRow, selectedCol); 
-                ConsoleKey key = Console.ReadKey(true).Key; // CRIAR MÉTODO NA VIEW que retorna a key (ou seja lê a tecla que o utilizador selecionou)
-                HandleInput(key);
-
-
+                HandleInput(view.ReadInputPlayer());
+                
             }while (!grid.IsVictory());
 
             view.ShowVictory();

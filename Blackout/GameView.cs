@@ -10,48 +10,35 @@ namespace Blackout.View
     public class GameView
     {
         private Canvas canvas;
-        /*
-        /// <summary>
-        /// Draws the game board to the console, using different colors for cells. ON (yellow) and OFF (grey).
-        /// </summary>
-        /// <param name="grid"></param>
-        public void DrawBoard (Grid grid, int selectedRow, int selectedCol)
-        {
-            AnsiConsole.WriteLine();
-
-            for(int row = 0; row < grid.Rows; row++)
-            {
-                for(int col = 0; col < grid.Columns; col++)
-                {
-                    Cell cell = grid.GetCell(row, col);
-                    if (row == selectedRow && col == selectedCol)
-                        AnsiConsole.Markup("[red]■ [/]");
-                    else if (cell.State == CellState.ON)
-                        AnsiConsole.Markup("[yellow]■ [/]");
-                    else
-                        AnsiConsole.Markup("[grey]■ [/]");
-                }
-                AnsiConsole.WriteLine();
-            }
-            AnsiConsole.WriteLine();
-        }
-        */
         public void StartGrid(Grid grid)
         {
-            canvas = new Canvas(grid.Columns, grid.Rows);
-            
-            AnsiConsole.Live(canvas)
-                .AutoClear(false)
-                .Start(ctx =>
-                {
-                    ctx.Refresh();
-                });
+            int cellSize = 2;
+            int width = grid.Columns * cellSize + grid.Columns + 1;
+            int height = grid.Rows * cellSize + grid.Rows + 1;
+            canvas = new Canvas(width, height);
         }
 
         public void UpdateGrid(Grid grid, int selectedRow, int selectedCol)
         {
+            int cellSize = 2;
+            int width = grid.Columns * cellSize + grid.Columns + 1;
+            int height = grid.Rows * cellSize + grid.Rows + 1;
+            canvas = new Canvas(width, height);
+
             AnsiConsole.Clear();
-        
+            ShowInstructions();
+            
+            // Draw grid lines
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    if (x % (cellSize + 1) == 0 || y % (cellSize + 1) == 0)
+                        canvas.SetPixel(x, y, Color.Black);
+                }
+            }
+            
+            // Draw cells
             for (int row = 0; row < grid.Rows; row++)
             {
                 for (int col = 0; col < grid.Columns; col++)
@@ -62,7 +49,16 @@ namespace Blackout.View
                     if (row == selectedRow && col == selectedCol)
                         color = Color.Red;
                     
-                    canvas.SetPixel(col, row, color);
+                    int startX = col * (cellSize + 1) + 1;
+                    int startY = row * (cellSize + 1) + 1;
+                    
+                    for (int dx = 0; dx < cellSize; dx++)
+                    {
+                        for (int dy = 0; dy < cellSize; dy++)
+                        {
+                            canvas.SetPixel(startX + dx, startY + dy, color);
+                        }
+                    }
                 }
             }
             AnsiConsole.Write(canvas);
@@ -92,6 +88,14 @@ namespace Blackout.View
             Console.WriteLine("Invalid choice. Defaulting to Exit.");
             return 2;
         }
+        /// <summary>
+        /// Displays instructions for the game controls to the user.
+        /// </summary>
+        public void ShowInstructions()
+        {
+            AnsiConsole.MarkupLine("[bold][White]Arrows = move | Space = select | ESC = exit[/][/]");
+            AnsiConsole.WriteLine();
+        }
 
         /// <summary>
         /// Asks the user to select a difficulty level and returns the corresponding board size.
@@ -114,6 +118,12 @@ namespace Blackout.View
             Console.WriteLine("Invalid choice. Defaulting to Easy.");
             return 3;
         }
+        
+        /// <summary>
+        /// Reads a key input from the user and returns it as a ConsoleKey.
+        /// </summary>
+        /// <returns>The ConsoleKey corresponding to the user's input.</returns>
+        public ConsoleKey ReadInputPlayer() => Console.ReadKey(true).Key;
 
         /// <summary>
         /// Displays a victory message to the user when they win the game.
@@ -125,20 +135,6 @@ namespace Blackout.View
                     .Border(BoxBorder.Double)
                     .Padding(2, 1)
             );
-        }
-
-        /// <summary>
-        /// Asks the user to input the row and column coordinates for their move, and returns them as a tuple.
-        /// </summary>
-        /// <returns>
-        /// A tuple containing the selected row and column coordinates.
-        /// </returns>
-        public (int row, int col) AskCoordinates()
-        {
-            int row = AnsiConsole.Ask<int>("Row:");
-            int col = AnsiConsole.Ask<int>("Col:");
-
-            return (row, col);
         }
     }
 }
