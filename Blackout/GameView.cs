@@ -9,6 +9,7 @@ namespace Blackout.View
     /// </summary>
     public class GameView : IView
     {
+        /*
         /// <summary>
         /// Draws the game board to the console, using different colors for cells. ON (yellow) and OFF (grey).
         /// </summary>
@@ -32,6 +33,29 @@ namespace Blackout.View
                 AnsiConsole.WriteLine();
             }
             AnsiConsole.WriteLine();
+        }
+        */
+
+        public void UpdateGrid(Grid grid)
+        {
+            Canvas canvas = new Canvas(grid.Columns, grid.Rows);
+        
+            for (int row = 0; row < grid.Rows; row++)
+            {
+                for (int col = 0; col < grid.Columns; col++)
+                {
+                    var cell = grid.GetCell(row, col);
+                    var color = cell.State == CellState.ON ? Color.Yellow : Color.Grey;
+                    canvas.SetPixel(col, row, color);
+                }
+            }
+        
+            AnsiConsole.Live(canvas)
+                .AutoClear(false)
+                .Start(ctx =>
+                {
+                    ctx.Refresh();
+                });
         }
 
         /// <summary>
