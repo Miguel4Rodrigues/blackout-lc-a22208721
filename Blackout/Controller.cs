@@ -17,22 +17,21 @@ namespace Blackout
         /// </summary>
         public void Run(IView view)
         {
-            /*int option = view.ShowMenu();
+            int option = view.ShowMenu();
+            int size = 0;
             switch (option)
             {
                 case 1:
                 default:
                     // Ask the user for the grid size
-                    //int size = view.SelectDifficulty();
+                    size = view.SelectDifficulty();
                     break;
                 case 2:
                     //view.ExitMessage();
                     break;
 
-            }*/
+            }
 
-            
-            int size = view.SelectDifficulty();
 
             // Validate size (must be 3, 5 or 8)
             while (size != 3 && size != 5 && size != 8)
@@ -40,7 +39,6 @@ namespace Blackout
                 //view.ShowInvalidMessage("Invalid Size!");
                 size = view.SelectDifficulty();
             }
-
             CreateGrid(size);
 
             // Main game loop
