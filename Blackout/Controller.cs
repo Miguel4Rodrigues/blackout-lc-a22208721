@@ -11,29 +11,31 @@ namespace Blackout
     public class Controller
     {
         private Grid grid;
-        private int selectedRow = -1;
-        private int selectedCol = -1;
+        private int selectedRow = 0;
+        private int selectedCol = 0;
+        private int size;
 
         /// <summary>
         /// Runs the main game loop until the victory condition is met.
         /// </summary>
         public void Run(IView view)
         {
-            int size = GetGameSize(view);
+            size = GetGameSize(view);
             if (size == -1) return;
 
-            CreateGrid(size);
+            CreateGrid(size);                
+            //view.DrawBoard(grid, selectedRow, selectedCol); // REMOVER
 
-            // Main game loop
+            // ATUALIZAR A VIEW DA GRID (Usar canvas)
+            //view.RunLiveGame(this);
+
+            /*// Main game loop
             do
-            {
-                view.DrawBoard(grid, selectedRow, selectedCol);
+            {   
+                ConsoleKey key = Console.ReadKey(true).Key; // CRIAR MÉTODO NA VIEW que retorna a key (ou seja lê a tecla que o utilizador selecionou)
+                HandleInput(view.ReadKey());
 
-                (selectedRow, selectedCol) = GetValidCoordinates(view, size);
-
-                grid.ToggleVonNeumann(selectedRow, selectedCol);
-
-            }while (!grid.IsVictory());
+            }while (!grid.IsVictory());*/
 
             view.ShowVictory();
         }
@@ -82,18 +84,32 @@ namespace Blackout
             return size;
         }
         
-        private (int row, int col) GetValidCoordinates(IView view, int size)
+
+        private void HandleInput(ConsoleKey key)
         {
-            (int  row, int  col) = view.AskCoordinates();
-
-            // Validate coordinates
-            while (row < 0 || row >= size || col < 0 || col >= size)
+            switch (key)
             {
-                //view.ShowInvalidMessage("Invalid Coordinates!");
-                (row, col) = view.AskCoordinates();
-            }
+                case ConsoleKey.UpArrow:
+                    selectedRow = Math.Max(0, selectedRow - 1);
+                    break;
 
-            return (row, col);
+                case ConsoleKey.DownArrow:
+                    selectedRow = Math.Min(size - 1, selectedRow + 1);
+                    break;
+                
+                case ConsoleKey.RightArrow:
+                    selectedCol = Math.Min(size - 1, selectedCol + 1);
+                    break;
+
+                case ConsoleKey.LeftArrow:
+                    selectedCol = Math.Max(0, selectedCol - 1);
+                    break;
+
+                case ConsoleKey.Spacebar:
+                case ConsoleKey.Enter:
+                    grid.ToggleVonNeumann(selectedRow, selectedCol);
+                    break;
+            }
         }
     }
 }
