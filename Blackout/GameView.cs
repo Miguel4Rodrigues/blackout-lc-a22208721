@@ -37,7 +37,7 @@ namespace Blackout.View
         /// <summary>
         /// Displays the main menu of the game, allowing the user to start a new game or exit.
         /// </summary>
-        public void ShowMenu()
+        public int ShowMenu()
         {
             Panel panel = new Panel("[bold green]BLACKOUT[/]")
                 .Border(BoxBorder.Double)
@@ -48,8 +48,15 @@ namespace Blackout.View
 
             AnsiConsole.WriteLine();
 
-            AnsiConsole.MarkupLine("[cyan]1[/] - Start New Game");
-            AnsiConsole.MarkupLine("[cyan]2[/] - Exit");
+            string choice = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .AddChoices("[cyan]1[/] - Start New Game", "[cyan]2[/] - Exit")
+            );
+            if (choice == "[cyan]1[/] - Start New Game") return 1;
+            if (choice == "[cyan]2[/] - Exit") return 2;
+            
+            Console.WriteLine("Invalid choice. Defaulting to Exit.");
+            return 2;
         }
 
         /// <summary>

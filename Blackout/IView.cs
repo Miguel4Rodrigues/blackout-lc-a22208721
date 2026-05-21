@@ -8,7 +8,7 @@ namespace Blackout.View
         void DrawBoard(Grid grid, int selectedRow, int selectedCol);
         int SelectDifficulty();
         void ShowVictory();
-        void ShowMenu();
+        int ShowMenu();
         (int row, int col) AskCoordinates();
     }
 }
