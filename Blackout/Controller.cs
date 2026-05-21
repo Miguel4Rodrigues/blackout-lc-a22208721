@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using Blackout.View;
 
 namespace Blackout
@@ -10,55 +11,31 @@ namespace Blackout
     public class Controller
     {
         private Grid grid;
-        private int selectedRow = -1;
-        private int selectedCol = -1;
+        private int selectedRow = 0;
+        private int selectedCol = 0;
+        private int size;
+
         /// <summary>
         /// Runs the main game loop until the victory condition is met.
         /// </summary>
         public void Run(IView view)
         {
-            int option = view.ShowMenu();
-            int size = 0;
-            switch (option)
-            {
-                case 1:
-                default:
-                    // Ask the user for the grid size
-                    size = view.SelectDifficulty();
-                    break;
-                case 2:
-                    //view.ExitMessage();
-                    break;
+            size = GetGameSize(view);
+            if (size == -1) return;
 
-            }
+            CreateGrid(size);                
+            //view.DrawBoard(grid, selectedRow, selectedCol); // REMOVER
 
-
-            // Validate size (must be 3, 5 or 8)
-            while (size != 3 && size != 5 && size != 8)
-            {
-                //view.ShowInvalidMessage("Invalid Size!");
-                size = view.SelectDifficulty();
-            }
-            CreateGrid(size);
-
-            // Main game loop
+            /*// Main game loop
             do
-            {
-                view.DrawBoard(grid, selectedRow, selectedCol);
-                (int row, int col) = view.AskCoordinates();
+            {   
+                ConsoleKey key = Console.ReadKey(true).Key; // CRIAR MÉTODO NA VIEW que retorna a key (ou seja lê a tecla que o utilizador selecionou)
+                HandleInput(view.ReadKey());
 
-                // Validate coordinates
-                while (row < 0 || row >= size || col < 0 || col >= size)
-                {
-                    //view.ShowInvalidMessage("Invalid Coordinates!");
-                    (row, col) = view.AskCoordinates();
-                }
-                selectedRow = row;
-                selectedCol = col;
+                // ATUALIZAR A VIEW DA GRID (Usar canvas)
+                view.RunLiveGame();
 
-                grid.ToggleVonNeumann(row, col);
-
-            }while (!grid.IsVictory());
+            }while (!grid.IsVictory());*/
 
             view.ShowVictory();
         }
@@ -90,6 +67,49 @@ namespace Blackout
             };
 
             grid.ApplyRandomClicks(clicks);
+        }
+
+        private int GetGameSize(IView view)
+        {
+            int option = view.ShowMenu();
+
+            if (option == 2)
+                return -1;
+
+            int size = view.SelectDifficulty();
+
+            while (size != 3 && size != 5 && size != 8)
+                size = view.SelectDifficulty();
+
+            return size;
+        }
+        
+
+        private void HandleInput(ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.UpArrow:
+                    selectedRow = Math.Max(0, selectedRow - 1);
+                    break;
+
+                case ConsoleKey.DownArrow:
+                    selectedRow = Math.Min(size - 1, selectedRow + 1);
+                    break;
+                
+                case ConsoleKey.RightArrow:
+                    selectedCol = Math.Min(size - 1, selectedCol + 1);
+                    break;
+
+                case ConsoleKey.LeftArrow:
+                    selectedCol = Math.Max(0, selectedCol - 1);
+                    break;
+
+                case ConsoleKey.Spacebar:
+                case ConsoleKey.Enter:
+                    grid.ToggleVonNeumann(selectedRow, selectedCol);
+                    break;
+            }
         }
     }
 }
