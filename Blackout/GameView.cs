@@ -7,8 +7,9 @@ namespace Blackout.View
     /// <summary>
     /// Represents the game view, responsible for displaying the board, menus, and handling user input. Uses Spectre.Console for improved console output.
     /// </summary>
-    public class GameView : IView
+    public class GameView
     {
+        private Canvas canvas;
         /*
         /// <summary>
         /// Draws the game board to the console, using different colors for cells. ON (yellow) and OFF (grey).
@@ -35,27 +36,36 @@ namespace Blackout.View
             AnsiConsole.WriteLine();
         }
         */
-
-        public void UpdateGrid(Grid grid)
+        public void StartGrid(Grid grid)
         {
-            Canvas canvas = new Canvas(grid.Columns, grid.Rows);
-        
-            for (int row = 0; row < grid.Rows; row++)
-            {
-                for (int col = 0; col < grid.Columns; col++)
-                {
-                    var cell = grid.GetCell(row, col);
-                    var color = cell.State == CellState.ON ? Color.Yellow : Color.Grey;
-                    canvas.SetPixel(col, row, color);
-                }
-            }
-        
+            canvas = new Canvas(grid.Columns, grid.Rows);
+            
             AnsiConsole.Live(canvas)
                 .AutoClear(false)
                 .Start(ctx =>
                 {
                     ctx.Refresh();
                 });
+        }
+
+        public void UpdateGrid(Grid grid, int selectedRow, int selectedCol)
+        {
+            AnsiConsole.Clear();
+        
+            for (int row = 0; row < grid.Rows; row++)
+            {
+                for (int col = 0; col < grid.Columns; col++)
+                {
+                    Cell cell = grid.GetCell(row, col);
+                    Color color = cell.State == CellState.ON ? Color.Yellow : Color.Grey;
+                    
+                    if (row == selectedRow && col == selectedCol)
+                        color = Color.Red;
+                    
+                    canvas.SetPixel(col, row, color);
+                }
+            }
+            AnsiConsole.Write(canvas);
         }
 
         /// <summary>

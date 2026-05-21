@@ -18,20 +18,20 @@ namespace Blackout
         /// <summary>
         /// Runs the main game loop until the victory condition is met.
         /// </summary>
-        public void Run(IView view)
+        public void Run(GameView view)
         {
             size = GetGameSize(view);
             if (size == -1) return;
 
             CreateGrid(size);
-            //view.StartGrid(grid);
+            view.StartGrid(grid);
 
             // Main game loop
             do
             {   
                 view.UpdateGrid(grid, selectedRow, selectedCol); 
-                /*ConsoleKey key = Console.ReadKey(true).Key; // CRIAR MÉTODO NA VIEW que retorna a key (ou seja lê a tecla que o utilizador selecionou)
-                HandleInput(key);*/
+                ConsoleKey key = Console.ReadKey(true).Key; // CRIAR MÉTODO NA VIEW que retorna a key (ou seja lê a tecla que o utilizador selecionou)
+                HandleInput(key);
 
 
             }while (!grid.IsVictory());
@@ -68,7 +68,7 @@ namespace Blackout
             grid.ApplyRandomClicks(clicks);
         }
 
-        private int GetGameSize(IView view)
+        private int GetGameSize(GameView view)
         {
             int option = view.ShowMenu();
 

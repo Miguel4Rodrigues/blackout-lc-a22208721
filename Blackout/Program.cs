@@ -15,7 +15,7 @@ namespace Blackout
             Controller controller = new Controller();
 
             // Create View
-            IView view = new GameView();
+            GameView view = new GameView();
 
             // Initialize controller
             controller.Run(view);
