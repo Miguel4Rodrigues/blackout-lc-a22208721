@@ -15,16 +15,29 @@ namespace Blackout
         private int selectedCol = 0;
         private int size;
 
+        private bool isRunning = true;
+
         /// <summary>
         /// Runs the main game loop until the victory condition is met.
         /// </summary>
         public void Run(GameView view)
         {
-            size = GetGameSize(view);
-            if (size == -1) return;
+            string option;
+            option = view.ShowMenu();
 
-            CreateGrid(size);
-            view.StartGrid(grid);
+            switch(option)
+            {
+                case "[cyan]1[/] - Start New Game":
+                    GetGameSize(view);
+                    CreateGrid(size);
+                    view.StartGrid(grid);
+                break;
+
+                case "[cyan]2[/] - Exit":
+                    view.ShowExitMessage();
+                    return;
+
+            }
 
             // Main game loop
             do
@@ -32,9 +45,13 @@ namespace Blackout
                 view.UpdateGrid(grid, selectedRow, selectedCol); 
                 HandleInput(view.ReadInputPlayer());
                 
-            }while (!grid.IsVictory());
+            }while (!grid.IsVictory() && isRunning);
 
-            view.ShowVictory();
+
+            if (grid.IsVictory())
+                view.ShowVictory();
+            else
+                view.ShowExitMessage();
         }
 
         /// <summary>
@@ -68,15 +85,18 @@ namespace Blackout
 
         private int GetGameSize(GameView view)
         {
-            int option = view.ShowMenu();
-
-            if (option == 2)
-                return -1;
-
-            int size = view.SelectDifficulty();
-
-            while (size != 3 && size != 5 && size != 8)
-                size = view.SelectDifficulty();
+            switch (view.SelectDifficulty())
+            {
+                case "1 - Easy (3x3)":
+                    size = 3;
+                    break;
+                case "2 - Medium (5x5)":
+                    size = 5;
+                    break;
+                case "3 - Hard (8x8)":
+                    size = 8;
+                    break;
+            }
 
             return size;
         }
@@ -105,6 +125,10 @@ namespace Blackout
                 case ConsoleKey.Spacebar:
                 case ConsoleKey.Enter:
                     grid.ToggleVonNeumann(selectedRow, selectedCol);
+                    break;
+
+                case ConsoleKey.Escape:
+                    isRunning = false;
                     break;
             }
         }

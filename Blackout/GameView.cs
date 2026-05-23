@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Spectre.Console;
 
 namespace Blackout.View
@@ -10,21 +9,21 @@ namespace Blackout.View
     public class GameView
     {
         private Canvas canvas;
+        private int width;
+        private int height;
+        private int cellSize = 2;
+
         public void StartGrid(Grid grid)
         {
-            int cellSize = 2;
-            int width = grid.Columns * cellSize + grid.Columns + 1;
-            int height = grid.Rows * cellSize + grid.Rows + 1;
+            width = grid.Columns * cellSize + grid.Columns + 1;
+
+            height = grid.Rows * cellSize + grid.Rows + 1;
+
             canvas = new Canvas(width, height);
         }
 
         public void UpdateGrid(Grid grid, int selectedRow, int selectedCol)
         {
-            int cellSize = 2;
-            int width = grid.Columns * cellSize + grid.Columns + 1;
-            int height = grid.Rows * cellSize + grid.Rows + 1;
-            canvas = new Canvas(width, height);
-
             AnsiConsole.Clear();
             ShowInstructions();
             
@@ -67,7 +66,7 @@ namespace Blackout.View
         /// <summary>
         /// Displays the main menu of the game, allowing the user to start a new game or exit.
         /// </summary>
-        public int ShowMenu()
+        public string ShowMenu()
         {
             Panel panel = new Panel("[bold green]BLACKOUT[/]")
                 .Border(BoxBorder.Double)
@@ -82,19 +81,20 @@ namespace Blackout.View
                 new SelectionPrompt<string>()
                     .AddChoices("[cyan]1[/] - Start New Game", "[cyan]2[/] - Exit")
             );
-            if (choice == "[cyan]1[/] - Start New Game") return 1;
-            if (choice == "[cyan]2[/] - Exit") return 2;
-            
-            Console.WriteLine("Invalid choice. Defaulting to Exit.");
-            return 2;
+            return choice;
         }
+
+        public void ShowExitMessage()
+        {
+            AnsiConsole.MarkupLine("[bold][White]Bye![/][/]");
+        }
+
         /// <summary>
         /// Displays instructions for the game controls to the user.
         /// </summary>
         public void ShowInstructions()
         {
             AnsiConsole.MarkupLine("[bold][White]Arrows = move | Space = select | ESC = exit[/][/]");
-            AnsiConsole.WriteLine();
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Blackout.View
         /// <returns>
         /// The size of the board corresponding to the selected difficulty level.
         /// </returns>
-        public int SelectDifficulty()
+        public string SelectDifficulty()
         {
             string choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
@@ -111,12 +111,7 @@ namespace Blackout.View
                     .AddChoices("1 - Easy (3x3)", "2 - Medium (5x5)", "3 - Hard (8x8)")
             );
 
-            if (choice == "1 - Easy (3x3)") return 3;
-            if (choice == "2 - Medium (5x5)") return 5;
-            if (choice == "3 - Hard (8x8)") return 8;
-
-            Console.WriteLine("Invalid choice. Defaulting to Easy.");
-            return 3;
+            return choice;
         }
         
         /// <summary>
