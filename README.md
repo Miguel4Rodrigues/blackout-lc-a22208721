@@ -154,7 +154,7 @@ Program --> GameView
 Controller --> Grid
 Grid --> Cell
 Cell --> CellState
-GameView --> Controller
+Controller --> GameView
 ```
 
 ---
