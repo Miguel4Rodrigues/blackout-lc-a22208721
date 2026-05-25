@@ -108,7 +108,17 @@ namespace Blackout.View
         /// </summary>
         public void ShowExitMessage()
         {
-            AnsiConsole.MarkupLine("[bold][White]Bye![/][/]");
+            AnsiConsole.Clear();
+
+            AnsiConsole.Write(
+                new Panel(
+                    "[white]Thank you for playing Blackout.[/]\n\n" +
+                    "[yellow]Session terminated.[/]"
+                )
+                .Header("[bold red]SYSTEM SHUTDOWN[/]")
+                .Border(BoxBorder.Double)
+                .Padding(1, 1)
+            );
         }
 
         /// <summary>
@@ -116,7 +126,7 @@ namespace Blackout.View
         /// </summary>
         public void ShowInstructions()
         {
-            AnsiConsole.MarkupLine("[bold][White]Arrows = move | Space = select | ESC = exit[/][/]");
+            AnsiConsole.MarkupLine("[bold White]Arrows = move | Space = select | ESC = exit[/]");
         }
 
         /// <summary>
@@ -141,7 +151,7 @@ namespace Blackout.View
         public ConsoleKey ReadInputPlayer() => Console.ReadKey(true).Key;
 
         /// <summary>
-        /// Displays a victory message whe the player wins the game.
+        /// Displays a victory message when the player wins the game.
         /// </summary>
         public void ShowVictory()
         {
