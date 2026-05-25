@@ -12,14 +12,14 @@ Projeto desenvolvido no âmbito da unidade curricular de LP1 (Linguagens de Prog
   - Desenvolvimento da Grelha
     - Implementação da grelha com diferentes tamanhos
     - Definição dos diferentes estados das células
-  - Auxilio no desenvolvimento da GameView (View)
+  - Auxílio no desenvolvimento da GameView (View)
     - Atualizou o visual dos Menus
   - Comentários XML:
     - Documentação do código com comentários XML
 - Relatório:
     - Desenvolvimento da secção **"Como jogar"**
       - Descrição de como se joga
-    - Auxilio nas outras secções
+    - Auxílio nas outras secções
     - Diagrama UML
 
 ## Miguel Rodrigues, a22208721
@@ -29,9 +29,9 @@ Projeto desenvolvido no âmbito da unidade curricular de LP1 (Linguagens de Prog
     - Mensagem de instrução
     - Painel ao sair do jogo
     - Visualização da Grelha (Todas as células)
-  - Auxilio no desenvolvimento do Controller
+  - Auxílio no desenvolvimento do Controller
   - Comentários XML:
-    - Auxilio na documentação do código com comentários XML
+    - Auxílio na documentação do código com comentários XML
 - Relatório:
   - Desenvolvimento de todas as secções
   - Organização
