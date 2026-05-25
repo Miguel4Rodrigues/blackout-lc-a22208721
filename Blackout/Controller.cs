@@ -1,5 +1,4 @@
 using System;
-using System.Drawing;
 using Blackout.View;
 
 namespace Blackout
@@ -18,8 +17,12 @@ namespace Blackout
         private bool isRunning = true;
 
         /// <summary>
-        /// Runs the main game loop until the victory condition is met.
+        /// Runs the main game loop, starting from the menu selection
+        /// and continuing until the player wins or exits the game.
         /// </summary>
+        /// <param name="view">
+        /// The view responsible for rendering the UI and reading player input
+        /// </param>
         public void Run(GameView view)
         {
             string option;
@@ -83,6 +86,12 @@ namespace Blackout
             grid.ApplyRandomClicks(clicks);
         }
 
+        /// <summary>
+        /// Asks the player to select a difficulty level and returns
+        /// the corresponding grid size.
+        /// </summary>
+        /// <param name="view">The view used to display the difficulty menu.</param>
+        /// <returns>The selected grid size (3, 5, or 8).</returns>
         private int GetGameSize(GameView view)
         {
             switch (view.SelectDifficulty())
@@ -101,7 +110,11 @@ namespace Blackout
             return size;
         }
         
-
+        /// <summary>
+        /// Processes player input to move the selection cursor,
+        /// toggle cells, or exit the game.
+        /// </summary>
+        /// <param name="key">The key pressed by the player.</param>
         private void HandleInput(ConsoleKey key)
         {
             switch (key)

@@ -4,15 +4,26 @@ using Spectre.Console;
 namespace Blackout.View
 {
     /// <summary>
-    /// Represents the game view, responsible for displaying the board, menus, and handling user input. Uses Spectre.Console for improved console output.
+    /// Represents the game view, responsible for rendering the grid,
+    /// menus, instructions, and reading user input. Uses Spectre.Console
+    /// for enhanced console visualization.
     /// </summary>
     public class GameView
     {
         private Canvas canvas;
         private int width;
         private int height;
+
+        /// <summary>
+        /// Scale the cell
+        /// </summary>
         private int cellSize = 2;
 
+        /// <summary>
+        /// Initializes the drawing canvas based on the grid dimensions.
+        /// Must be called before updating or rendering the grid.
+        /// </summary>
+        /// <param name="grid">The grid whose dimensions determine the canvas size.</param>
         public void StartGrid(Grid grid)
         {
             width = grid.Columns * cellSize + grid.Columns + 1;
@@ -22,6 +33,13 @@ namespace Blackout.View
             canvas = new Canvas(width, height);
         }
 
+        /// <summary>
+        /// Renders the current state of the grid, including cell colors,
+        /// grid lines, and the selected cell highlight.
+        /// </summary>
+        /// <param name="grid">The grid containing the cell states to display.</param>
+        /// <param name="selectedRow">The row index of the currently selected cell.</param>
+        /// <param name="selectedCol">The column index of the currently selected cell.</param>
         public void UpdateGrid(Grid grid, int selectedRow, int selectedCol)
         {
             AnsiConsole.Clear();
@@ -64,8 +82,9 @@ namespace Blackout.View
         }
 
         /// <summary>
-        /// Displays the main menu of the game, allowing the user to start a new game or exit.
+        /// Displays the main menu of the game, allowing the user to start a new game.
         /// </summary>
+        /// <returns>The selected menu option as a string.</returns>
         public string ShowMenu()
         {
             Panel panel = new Panel("[bold green]BLACKOUT[/]")
@@ -84,13 +103,16 @@ namespace Blackout.View
             return choice;
         }
 
+        /// <summary>
+        /// Displays a farewell message when the user exits the game.
+        /// </summary>
         public void ShowExitMessage()
         {
             AnsiConsole.MarkupLine("[bold][White]Bye![/][/]");
         }
 
         /// <summary>
-        /// Displays instructions for the game controls to the user.
+        /// Displays instructions for the game controls.
         /// </summary>
         public void ShowInstructions()
         {
@@ -98,11 +120,9 @@ namespace Blackout.View
         }
 
         /// <summary>
-        /// Asks the user to select a difficulty level and returns the corresponding board size.
+        /// Prompts the user to select a difficulty level.
         /// </summary>
-        /// <returns>
-        /// The size of the board corresponding to the selected difficulty level.
-        /// </returns>
+        /// <returns>A string representing the selected difficulty option.</returns>
         public string SelectDifficulty()
         {
             string choice = AnsiConsole.Prompt(
@@ -115,13 +135,13 @@ namespace Blackout.View
         }
         
         /// <summary>
-        /// Reads a key input from the user and returns it as a ConsoleKey.
+        /// Reads a key press from the user without displaying it on the console.
         /// </summary>
-        /// <returns>The ConsoleKey corresponding to the user's input.</returns>
+        /// <returns>The key pressed by the user.</returns>
         public ConsoleKey ReadInputPlayer() => Console.ReadKey(true).Key;
 
         /// <summary>
-        /// Displays a victory message to the user when they win the game.
+        /// Displays a victory message whe the player wins the game.
         /// </summary>
         public void ShowVictory()
         {

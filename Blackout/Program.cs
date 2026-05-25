@@ -3,12 +3,17 @@ using Blackout.View;
 
 namespace Blackout
 {
+    /// <summary>
+    /// Entry point of the Blackout game application.
+    /// Responsible for initializing the Controller and View
+    /// and starting the game loop.
+    /// </summary>
     public class Program
     {
         /// <summary>
-        /// Program begins here.
+        /// Program execution begins here.
         /// </summary>
-        /// <param name="args">Not used</param>
+        /// <param name="args">Command-line arguments (not used).</param>
         private static void Main(string[] args)
         {
             // Create Controller

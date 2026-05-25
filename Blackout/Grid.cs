@@ -7,26 +7,27 @@ namespace Blackout
 {
     /// <summary>
     /// Represents a 2D grid of cells used in the Blackout puzzle.
+    /// Handles cell initialization, state toggling, and victory checking.
     /// </summary>
     public class Grid
     {
         private Cell[ , ] cells;
 
         /// <summary>
-        /// Number of rows in the grid.
+        /// Gets the number of rows in the grid.
         /// </summary>
         public int Rows { get; }
         /// <summary>
-        /// Number of columns in the grid.
+        /// Gets the number of columns in the grid.
         /// </summary>
         public int Columns { get; }
 
         /// <summary>
-        /// Creates a new grid with the specific number of rows and columns.
-        /// All cells start in the OFF state.
+        /// Creates a new grid with the specified number of rows and columns.
+        /// All cells are initialized in the OFF state.
         /// </summary>
-        /// <param name="rows">Number of rows.</param>
-        /// <param name="columns">Number of columns.</param>
+        /// <param name="rows">The number of rows in the grid.</param>
+        /// <param name="columns">The number of columns in the grid.</param>
         public Grid(int rows, int columns)
         {
             Rows = rows;
@@ -45,9 +46,10 @@ namespace Blackout
 
         /// <summary>
         /// Applies a number of random toggles to generate the initial 
-        /// puzzle state.
+        /// puzzle configuration. Each toggle affects a cell and its
+        /// Von Neumann neighbors.
         /// </summary>
-        /// <param name="clicks">Number of random clicks to apply.</param>
+        /// <param name="clicks">The number of random toggles to apply.</param>
         public void ApplyRandomClicks(int clicks)
         {
             Random rnd = new Random();
@@ -65,8 +67,8 @@ namespace Blackout
         /// Toggle the state of the selected cell and its 
         /// four orthogonal neighbors (Von Neumman neighborhood).
         /// </summary>
-        /// <param name="row">Row index of the central cell.</param>
-        /// <param name="column">Column index of the central cell.</param>
+        /// <param name="row">The row index of the central cell.</param>
+        /// <param name="column">The column index of the central cell.</param>
         public void ToggleVonNeumann(int row, int column)
         {
             // Toggle the cell itself
@@ -81,10 +83,10 @@ namespace Blackout
 
         /// <summary>
         /// Toggles the state of the cell at the given coordinates,
-        /// if the coordinates are inside the grid.
+        /// if the coordinates are within the grid boundaries.
         /// </summary>
-        /// <param name="r">Row index.</param>
-        /// <param name="c">Column index.</param>
+        /// <param name="r">The row index of the cell.</param>
+        /// <param name="c">The column index of the cell.</param>
         public void Toggle(int r, int c)
         {
             if (r < 0 || r >= Rows || c < 0 || c >= Columns) return;
@@ -96,9 +98,10 @@ namespace Blackout
         }
 
         /// <summary>
-        /// Checks whether all cells in the grid are OFF.
+        /// Determines whether the puzzle has been solved.
+        /// The puzzle is solved when all cells are OFF.
         /// </summary>
-        /// <returns>True if all cells are OFF; otherwise false.</returns>
+        /// <returns> True if all cells are OFF; otherwise, False.</returns>
         public bool IsVictory()
         {
             foreach (Cell cell in cells)
@@ -109,6 +112,13 @@ namespace Blackout
 
             return true;
         }
+
+        /// <summary>
+        /// Retrieves the cell at the specified row and column.
+        /// </summary>
+        /// <param name="row">The row index of the cell.</param>
+        /// <param name="col">The column index of the cell</param>
+        /// <returns>The <see cref="Cell"/> at the given coordinates.</returns>
         
         public Cell GetCell(int row, int col)
         {
