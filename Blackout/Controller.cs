@@ -10,11 +10,11 @@ namespace Blackout
     public class Controller
     {
         private Grid grid;
-        private int selectedRow = 0;
-        private int selectedCol = 0;
+        private int selectedRow;
+        private int selectedCol;
         private int size;
 
-        private bool isRunning = true;
+        private bool isRunning;
 
         /// <summary>
         /// Runs the main game loop, starting from the menu selection
@@ -25,6 +25,8 @@ namespace Blackout
         /// </param>
         public void Run(GameView view)
         {
+            isRunning = true;
+            
             string option;
             option = view.ShowMenu();
 
@@ -33,8 +35,8 @@ namespace Blackout
                 case "[cyan]1[/] - Start New Game":
                     GetGameSize(view);
                     CreateGrid(size);
-                    view.ShowProgressBar("Generating puzzle...");
                     view.StartGrid(grid);
+                    view.ShowProgressBar("Generating puzzle...");
                 break;
 
                 case "[cyan]2[/] - Exit":
@@ -68,6 +70,8 @@ namespace Blackout
         /// </param>
         public void CreateGrid(int size)
         {
+            selectedRow = 0;
+            selectedCol = 0;
             grid = new Grid(size, size);
 
             int clicks = 3;
