@@ -7,12 +7,13 @@ Projeto desenvolvido no âmbito da unidade curricular de LP1 (Linguagens de Prog
 # Autores
 
 ## Margarida Teles
-- Desenvolvimento do Game Loop
-- Implementação da lógica principal do jogo
+- Desenvolvimento do Game Loop (Controller)
+- Auxilio no desenvolvimento do README
 
 ## Miguel Rodrigues
 - Desenvolvimento da Game View
 - Criação do README
+- Auxilio no desenvolvimento do Game Loop (Controller)
 
 ---
 
@@ -27,15 +28,15 @@ GitHub: https://github.com/MargaridaTeles/Blackout.git
 Blackout é um jogo de puzzle jogado numa grelha de células. Cada célula pode estar ligada ou desligada.
 
 Quando o jogador seleciona uma célula:
-- O estado da célula é invertido;
+- O estado da célula é invertido (ON para OFF e OFF para ON);
 - O estado das células adjacentes (cima, baixo, esquerda e direita) também é invertido.
 
 O objetivo do jogo é desligar todas as células da grelha.
 
 O jogo inclui diferentes níveis de dificuldade:
-- 3x3
-- 5x5
-- 8x8
+- 3x3 (Fácil)
+- 5x5 (Médio)
+- 8x8 (Dificil)
 
 ---
 
@@ -94,16 +95,66 @@ Caso todas estejam desligadas, o jogador vence.
 ```mermaid
 classDiagram
 
-class Game
-class Board
-class Cell
-class GameView
-class GameController
+class Grid {
+  - Cell[ , ] cells
+  + int Rows
+  + int Columns
+  - static readonly Random
+  + Grid(int rows, int columns)
+  + ApplyRandomClicks(int clicks)
+  + ToggleVonNeumann(int row, int col)
+  + Toggle(int r, int c)
+  + IsVictory()
+  + GetCell(int row, int col)
+}
 
-Game --> Board
-Board --> Cell
-GameController --> Game
-GameView --> GameController
+class Cell {
+  - CellState State
+  + Toggle()
+}
+
+class GameView {
+  + StartGrid(grid)
+  + UpdateGrid(grid, row, col)
+  - DrawGridLines()
+  - DrawCells(grid, row, col)
+  + ShowMenu()
+  + ShowExittMessage()
+  + ShowInstructions()
+  + SelectDifficulty()
+  + ShowProgressBar(message)
+  + ReadInputPlayer()
+  + ShowVictory()
+}
+
+class Controller {
+  - Grid grid
+  - int selectedRow
+  - int selectedCol
+  - int size
+  - bool isRunning
+  + Run(view)
+  + CreateGrid(size)
+  - GetGameSize(view)
+  - HandleInput(key)
+}
+
+class CellState {
+  <<enumeration>>
+  ON
+  OFF
+}
+
+class Program {
+  + Main()
+}
+
+Program --> Controller
+Program --> GameView
+Controller --> Grid
+Grid --> Cell
+Cell --> CellState
+GameView --> Controller
 ```
 
 ---
@@ -133,6 +184,6 @@ GameView --> GameController
 Foi utilizada IA generativa (ChatGPT) para:
 - Esclarecimento de dúvidas;
 - Apoio na organização do README;
-- Apoio técnico durante o desenvolvimento.
+- Apoio na documentação XML.
 
 Toda a lógica e arquitetura do projeto foram desenvolvidas e compreendidas pelos elementos do grupo.
