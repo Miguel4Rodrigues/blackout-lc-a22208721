@@ -9,6 +9,7 @@ Projeto desenvolvido no âmbito da unidade curricular de LP1 (Linguagens de Prog
 ## Margarida Teles
 - Desenvolvimento do Game Loop (Controller)
 - Auxilio no desenvolvimento do README
+- Auxilio no desenvolvimento da Game View
 
 ## Miguel Rodrigues
 - Desenvolvimento da Game View
@@ -25,7 +26,7 @@ GitHub: https://github.com/MargaridaTeles/Blackout.git
 
 # Descrição do Projeto
 
-Blackout é um jogo de puzzle jogado numa grelha de células. Cada célula pode estar ligada ou desligada.
+Blackout é um jogo de puzzle jogado numa grelha de células. Cada célula tem dois estados (ON ou OFF).
 
 Quando o jogador seleciona uma célula:
 - O estado da célula é invertido (ON para OFF e OFF para ON);
@@ -33,34 +34,62 @@ Quando o jogador seleciona uma célula:
 
 O objetivo do jogo é desligar todas as células da grelha.
 
-O jogo inclui diferentes níveis de dificuldade:
+O jogo inclui diferentes níveis de dificuldade, pelos quais o jogador pode optar:
 - 3x3 (Fácil)
 - 5x5 (Médio)
 - 8x8 (Dificil)
 
 ---
 
+# Como jogar
+1 - O jogador inicia o programa.
+>dotnet run --project Blackout
+
+2 - Ao iniciar o programa aparece o Menu inicial que o permite inicial o jogo ou sair.
+![Menu Inicial]()
+
+3 - Caso escolha "Start New Game", aparece outro menu que o permite selecionar a dificuldade desejada.
+![Menu Dificuldade]()
+
+4 - A grelha é gerada com um padrão aleatório.
+![Grelha 3x3 gerada]()
+
+5 - O jogador navega pela grelha (representada a vermelho a célula onde se encontra)
+![Navegação na grelha]()
+
+6 - Pressiona Enter para inverter o estado da célula selecionada e as adjacentes.
+![Alterar estado]()
+
+7 - O jogo termina quando desligar todas as células
+![Vitoria]()
+
+*PS: Todas as opções e escolhas são feitas através do Input do teclado*
+
+---
 # Arquitetura da Solução
 
-O projeto foi desenvolvido segundo o padrão MVC (Model-View-Controller).
+O projeto foi desenvolvido seguindo a abordagem MVC (Model-View-Controller), no qual:
 
-## Model
+## Model (Grid.cs / Cell.cs / CellState.cs)
 Responsável pelos dados e pela lógica do jogo:
 - Estado da grelha
 - Regras do jogo
 - Verificação de vitória
 - Manipulação das células
 
-## View
-Responsável pela interface com o utilizador:
-- Apresentação da grelha
-- Menus
-- Informação do jogo
+## View (GameView.cs)
+Responsável pela interface e por comunicar ao Controller as ações do utilizador:
+- Apresentação da grelha (respetivas células)
+- Menus:
+  - Inicial
+  - Dificuldade
+- Instruções do jogo
+- Mensagens de feedback de Vitória e de Saída
 
 A interface é desenvolvida utilizando a biblioteca Spectre.Console.
 
-## Controller
-Responsável pela comunicação entre a View e o Model:
+## Controller (Controller.cs)
+Contém o ciclo principal do jogo e controla o jogo baseado no input do utilizador, notifica a view para atualizar o que está a mostrar:
 - Receção de input do jogador
 - Atualização do estado do jogo
 - Gestão do fluxo do jogo
@@ -73,13 +102,13 @@ Responsável pela comunicação entre a View e o Model:
 
 A grelha começa com todas as células desligadas.
 
-Depois disso, são realizados vários cliques aleatórios na grelha, dependendo da dificuldade escolhida, para gerar o estado inicial do puzzle.
+Depois disso, são realizados vários cliques aleatórios na grelha, dependendo da dificuldade escolhida (3 para a fácil, 5 para a média e 8 para a dificil), para gerar o estado inicial do puzzle.
 
 ## Atualização das Células
 
-Quando o jogador seleciona uma posição:
+Quando o jogador seleciona uma célula:
 1. A célula selecionada muda de estado;
-2. As células adjacentes também mudam de estado;
+2. As células adjacentes também mudam de estado (cima, esquerda, direita e baixo);
 3. O jogo verifica se todas as células estão desligadas.
 
 ## Verificação de Vitória
@@ -119,7 +148,7 @@ class GameView {
   - DrawGridLines()
   - DrawCells(grid, row, col)
   + ShowMenu()
-  + ShowExittMessage()
+  + ShowExitMessage()
   + ShowInstructions()
   + SelectDifficulty()
   + ShowProgressBar(message)
