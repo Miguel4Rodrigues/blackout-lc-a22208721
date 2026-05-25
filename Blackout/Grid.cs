@@ -21,6 +21,8 @@ namespace Blackout
         /// Gets the number of columns in the grid.
         /// </summary>
         public int Columns { get; }
+        private static readonly Random rnd = new Random();
+
 
         /// <summary>
         /// Creates a new grid with the specified number of rows and columns.
@@ -52,8 +54,6 @@ namespace Blackout
         /// <param name="clicks">The number of random toggles to apply.</param>
         public void ApplyRandomClicks(int clicks)
         {
-            Random rnd = new Random();
-
             for (int i = 0; i < clicks; i++)
             {
                 int r = rnd.Next(Rows);
