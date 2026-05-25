@@ -4,17 +4,38 @@ Projeto desenvolvido no âmbito da unidade curricular de LP1 (Linguagens de Prog
 
 ---
 
-# Autores
+# Autores e Divisão de tarefas
 
-## Margarida Teles
-- Desenvolvimento do Game Loop (Controller)
-- Auxilio no desenvolvimento do README
-- Auxilio no desenvolvimento da Game View
+## Margarida Teles, a22204247
+- Implementação
+  - Desenvolvimento do Controller
+  - Desenvolvimento da Grelha
+    - Implementação da grelha com diferentes tamanhos
+    - Definição dos diferentes estados das células
+  - Auxilio no desenvolvimento da GameView (View)
+    - Atualizou o visual dos Menus
+  - Comentários XML:
+    - Documentação do código com comentários XML
+- Relatório:
+    - Desenvolvimento da secção **"Como jogar"**
+      - Descrição de como se joga
+    - Auxilio nas outras secções
+    - Diagrama UML
 
-## Miguel Rodrigues
-- Desenvolvimento da Game View
-- Criação do README
-- Auxilio no desenvolvimento do Game Loop (Controller)
+## Miguel Rodrigues, a22208721
+- Implementação
+  - Desenvolvimento da GameView (View)
+    - Menus (Principal e Dificuldade)
+    - Mensagem de instrução
+    - Painel ao sair do jogo
+    - Visualização da Grelha (Todas as células)
+  - Auxilio no desenvolvimento do Controller
+  - Comentários XML:
+    - Auxilio na documentação do código com comentários XML
+- Relatório:
+  - Desenvolvimento de todas as secções
+  - Organização
+  - Inclusão de capturas de ecrã
 
 ---
 
@@ -51,13 +72,13 @@ O jogo inclui diferentes níveis de dificuldade, pelos quais o jogador pode opta
 3 - Caso escolha "Start New Game", aparece outro menu que o permite selecionar a dificuldade desejada.
 ![Menu Dificuldade]()
 
-4 - A grelha é gerada com um padrão aleatório.
+4 - A grelha é gerada com um padrão aleatório, após escolher a dificuldade.
 ![Grelha 3x3 gerada]()
 
 5 - O jogador navega pela grelha (representada a vermelho a célula onde se encontra)
 ![Navegação na grelha]()
 
-6 - Pressiona Enter para inverter o estado da célula selecionada e as adjacentes.
+6 - Pressiona *Enter* ou *Space* para inverter o estado da célula selecionada e as adjacentes.
 ![Alterar estado]()
 
 7 - O jogo termina quando desligar todas as células
