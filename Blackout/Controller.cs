@@ -33,6 +33,7 @@ namespace Blackout
                 case "[cyan]1[/] - Start New Game":
                     GetGameSize(view);
                     CreateGrid(size);
+                    view.ShowProgressBar("Generating puzzle...");
                     view.StartGrid(grid);
                 break;
 

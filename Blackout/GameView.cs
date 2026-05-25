@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Spectre.Console;
 
 namespace Blackout.View
@@ -15,9 +16,9 @@ namespace Blackout.View
         private int height;
 
         /// <summary>
-        /// Scale the cell
+        /// Defines the size of each cell when rendered on the canvas,
         /// </summary>
-        private int cellSize = 2;
+        private readonly int cellSize = 2;
 
         /// <summary>
         /// Initializes the drawing canvas based on the grid dimensions.
@@ -44,7 +45,18 @@ namespace Blackout.View
         {
             AnsiConsole.Clear();
             ShowInstructions();
-            
+
+            DrawGridLines();
+            DrawCells(grid, selectedRow, selectedCol);
+
+            AnsiConsole.Write(canvas);
+        }
+        
+        /// <summary>
+        /// Draws the grid lines on the canvas using black pixels.
+        /// </summary>
+        private void DrawGridLines()
+        {
             // Draw grid lines
             for (int x = 0; x < width; x++)
             {
@@ -54,15 +66,31 @@ namespace Blackout.View
                         canvas.SetPixel(x, y, Color.Black);
                 }
             }
-            
+        }
+
+        /// <summary>
+        /// Draws all cells of the grid onto the canvas, including the highlight
+        /// for the currently selected cell.
+        /// </summary>
+        /// <param name="grid">The grid containing the cell states.</param>
+        /// <param name="selectedRow">The row index of the selected cell.</param>
+        /// <param name="selectedCol">The column index of the selected cell.</param>
+        private void DrawCells(Grid grid, int selectedRow, int selectedCol)
+        {
             // Draw cells
             for (int row = 0; row < grid.Rows; row++)
             {
                 for (int col = 0; col < grid.Columns; col++)
                 {
                     Cell cell = grid.GetCell(row, col);
-                    Color color = cell.State == CellState.ON ? Color.Yellow : Color.Grey;
+                    Color color;
+
+                    if (cell.State == CellState.ON)
+                        color = Color.Yellow;
+                    else
+                        color = Color.Grey;
                     
+                    // Highlight current cell
                     if (row == selectedRow && col == selectedCol)
                         color = Color.Red;
                     
@@ -72,13 +100,10 @@ namespace Blackout.View
                     for (int dx = 0; dx < cellSize; dx++)
                     {
                         for (int dy = 0; dy < cellSize; dy++)
-                        {
                             canvas.SetPixel(startX + dx, startY + dy, color);
-                        }
                     }
                 }
             }
-            AnsiConsole.Write(canvas);
         }
 
         /// <summary>
@@ -87,19 +112,19 @@ namespace Blackout.View
         /// <returns>The selected menu option as a string.</returns>
         public string ShowMenu()
         {
-            Panel panel = new Panel("[bold green]BLACKOUT[/]")
-                .Border(BoxBorder.Double)
-                .Padding(1, 1)
-                .Expand();
-
-            AnsiConsole.Write(panel);
-
-            AnsiConsole.WriteLine();
+            AnsiConsole.Write(
+                new FigletText("BLACKOUT")
+                    .Centered()
+                    .Color(Color.Green)
+            );
 
             string choice = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
+                    .Title("[yellow]Select an option[/]")
                     .AddChoices("[cyan]1[/] - Start New Game", "[cyan]2[/] - Exit")
             );
+
+            
             return choice;
         }
 
@@ -141,7 +166,27 @@ namespace Blackout.View
                     .AddChoices("1 - Easy (3x3)", "2 - Medium (5x5)", "3 - Hard (8x8)")
             );
 
+
             return choice;
+        }
+
+        /// <summary>
+        /// Displays a progress bar with the specified message.
+        /// Used for visual feedback during operations such as puzzle generation.
+        /// </summary>
+        /// <param name="message">The message displayed above the progress bar.</param>
+        public void ShowProgressBar(string message)
+        {
+            AnsiConsole.Progress()
+                .Start(ctx =>
+                {
+                    var task = ctx.AddTask(message);
+                    while (!task.IsFinished)
+                    {
+                        task.Increment(5);
+                        Thread.Sleep(50);
+                    }
+                });
         }
         
         /// <summary>
