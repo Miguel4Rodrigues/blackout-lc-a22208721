@@ -71,25 +71,25 @@ O jogo disponibiliza três níveis de dificuldade:
 
 3. Caso escolha *Start New Game*, aparece outro menu que o permite escolher a dificuldade.
 
-![Menu Dificuldade](images/MenuDifficulty.png)
+![Menu Dificuldade](Images/MenuDifficulty.png)
 
 4. A grelha é gerada com um padrão aleatório, após escolher a dificuldade.
 
-![Grelha 3x3 gerada](images/Grid3x3.png)
+![Grelha 3x3 gerada](Images/Grid3x3.png)
 
-![Grelha 5x5 gerada](images/Grid5x5.png)
+![Grelha 5x5 gerada](Images/Grid5x5.png)
 
-![Grelha 8x8 gerada](images/Grid8x8.png)
+![Grelha 8x8 gerada](Images/Grid8x8.png)
 
 5. O jogador navega pela grelha (a célula selecionada aparece a vermelho).
 
-![Navegação na grelha](images/GridNavigation.png)
+![Navegação na grelha](Images/GridNavigation.png)
 
 6 - Pressiona **Enter** ou **Space** para inverter o estado da célula selecionada e as adjacentes.
 
 7 - O jogo termina quando desligar todas as células, ou seja o estado **OFF**.
 
-![Vitoria](images/Victory.png)
+![Vitoria](Images/Victory.png)
 
 *Notas: Todas as ações são realizadas através do teclado.*
 
