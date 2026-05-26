@@ -63,26 +63,31 @@ O jogo inclui diferentes níveis de dificuldade, pelos quais o jogador pode opta
 ---
 
 # Como jogar
-1 - O jogador inicia o programa.
->dotnet run --project Blackout
+1 - O jogador inicia o programa. ```dotnet run --project Blackout```
 
 2 - Ao iniciar o programa aparece o Menu inicial que o permite inicial o jogo ou sair.
-![Menu Inicial]()
+
+![Menu Inicial](Images/MainMenu.png)
 
 3 - Caso escolha "Start New Game", aparece outro menu que o permite selecionar a dificuldade desejada.
-![Menu Dificuldade]()
+
+![Menu Dificuldade](images/MenuDifficulty.png)
 
 4 - A grelha é gerada com um padrão aleatório, após escolher a dificuldade.
-![Grelha 3x3 gerada]()
+
+![Grelha 3x3 gerada](images/Grid3x3.png)
+![Grelha 5x5 gerada](images/Grid5x5.png)
+![Grelha 8x8 gerada](images/Grid8x8.png)
 
 5 - O jogador navega pela grelha (representada a vermelho a célula onde se encontra)
-![Navegação na grelha]()
+
+![Navegação na grelha](images/GridNavigation.png)
 
 6 - Pressiona *Enter* ou *Space* para inverter o estado da célula selecionada e as adjacentes.
-![Alterar estado]()
 
 7 - O jogo termina quando desligar todas as células
-![Vitoria]()
+
+![Vitoria](images/Victory.png)
 
 *PS: Todas as opções e escolhas são feitas através do Input do teclado*
 
