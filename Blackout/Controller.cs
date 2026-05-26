@@ -53,9 +53,15 @@ namespace Blackout
                 
             }while (!grid.IsVictory() && isRunning);
 
-
+            // When the player wins, clears the selection highlight and renders
+            // the final solved grid before displaying the victory panel.
             if (grid.IsVictory())
+            {
+                selectedRow = -1;
+                selectedCol = -1;
+                view.UpdateGrid(grid, selectedRow, selectedCol);
                 view.ShowVictory();
+            }
             else
                 view.ShowExitMessage();
         }
