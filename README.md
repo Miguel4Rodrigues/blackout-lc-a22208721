@@ -1,10 +1,10 @@
 # Blackout
 
-Projeto desenvolvido no âmbito da unidade curricular de LP1 (Linguagens de Programação I).
+Projeto desenvolvido no âmbito da unidade curricular de **LP1 - Linguagens de Programação I**.
 
 ---
 
-# Autores e Divisão de tarefas
+# Autores e Divisão de Tarefas
 
 ## Margarida Teles, a22204247
 - Implementação
@@ -47,101 +47,133 @@ GitHub: https://github.com/MargaridaTeles/Blackout.git
 
 # Descrição do Projeto
 
-Blackout é um jogo de puzzle jogado numa grelha de células. Cada célula tem dois estados (ON ou OFF).
+**Blackout** é um jogo de puzzle jogado numa grelha de células, onde cada célula pode estar em dois estados: **ON** ou **OFF**.
 
 Quando o jogador seleciona uma célula:
-- O estado da célula é invertido (ON para OFF e OFF para ON);
-- O estado das células adjacentes (cima, baixo, esquerda e direita) também é invertido.
+- A célula muda de estado;
+- As células adjacentes (cima, baixo, esquerda e direita) também mudam de estado.
 
-O objetivo do jogo é desligar todas as células da grelha.
+O objetivo é **desligar todas as células da grelha**.
 
-O jogo inclui diferentes níveis de dificuldade, pelos quais o jogador pode optar:
-- 3x3 (Fácil)
-- 5x5 (Médio)
-- 8x8 (Dificil)
+O jogo disponibiliza três níveis de dificuldade:
+- 3x3 - Fácil
+- 5x5 - Médio
+- 8x8 - Dificil
 
 ---
 
 # Como jogar
-1 - O jogador inicia o programa. ```dotnet run --project Blackout```
+1. Iniciar o programa. ```dotnet run --project Blackout```
 
-2 - Ao iniciar o programa aparece o Menu inicial que o permite inicial o jogo ou sair.
+2. Ao iniciar o programa surge o **Menu inicial** que o permite iniciar um novo jogo ou sair.
 
 ![Menu Inicial](Images/MainMenu.png)
 
-3 - Caso escolha "Start New Game", aparece outro menu que o permite selecionar a dificuldade desejada.
+3. Caso escolha *Start New Game*, aparece outro menu que o permite escolher a dificuldade.
 
 ![Menu Dificuldade](images/MenuDifficulty.png)
 
-4 - A grelha é gerada com um padrão aleatório, após escolher a dificuldade.
+4. A grelha é gerada com um padrão aleatório, após escolher a dificuldade.
 
 ![Grelha 3x3 gerada](images/Grid3x3.png)
+
 ![Grelha 5x5 gerada](images/Grid5x5.png)
+
 ![Grelha 8x8 gerada](images/Grid8x8.png)
 
-5 - O jogador navega pela grelha (representada a vermelho a célula onde se encontra)
+5. O jogador navega pela grelha (a célula selecionada aparece a vermelho).
 
 ![Navegação na grelha](images/GridNavigation.png)
 
-6 - Pressiona *Enter* ou *Space* para inverter o estado da célula selecionada e as adjacentes.
+6 - Pressiona **Enter** ou **Space** para inverter o estado da célula selecionada e as adjacentes.
 
-7 - O jogo termina quando desligar todas as células
+7 - O jogo termina quando desligar todas as células, ou seja o estado **OFF**.
 
 ![Vitoria](images/Victory.png)
 
-*PS: Todas as opções e escolhas são feitas através do Input do teclado*
+*Notas: Todas as ações são realizadas através do teclado.*
 
 ---
 # Arquitetura da Solução
 
-O projeto foi desenvolvido seguindo a abordagem MVC (Model-View-Controller), no qual:
+O projeto foi desenvolvido seguindo a abordagem **MVC (Model-View-Controller)**, no qual:
 
-## Model (Grid.cs / Cell.cs / CellState.cs)
-Responsável pelos dados e pela lógica do jogo:
-- Estado da grelha
+## Model
+Ficheiros: Grid.cs, Cell.cs, CellState.cs
+
+Responsável por:
+- Estado interno da grelha
 - Regras do jogo
-- Verificação de vitória
 - Manipulação das células
+- Verificação de vitória
 
-## View (GameView.cs)
-Responsável pela interface e por comunicar ao Controller as ações do utilizador:
-- Apresentação da grelha (respetivas células)
+## View
+Ficheiro: GameView.cs
+
+Responsável por:
+- Renderização da grelha
 - Menus:
   - Inicial
   - Dificuldade
 - Instruções do jogo
 - Mensagens de feedback de Vitória e de Saída
 
-A interface é desenvolvida utilizando a biblioteca Spectre.Console.
+A interface é desenvolvida utilizando a biblioteca **Spectre.Console**.
 
-## Controller (Controller.cs)
-Contém o ciclo principal do jogo e controla o jogo baseado no input do utilizador, notifica a view para atualizar o que está a mostrar:
+## Controller
+Ficheiro: Controller.cs
+
+Responsável por:
+- Ciclo principal do jogo
 - Receção de input do jogador
 - Atualização do estado do jogo
-- Gestão do fluxo do jogo
+- Comunicação entre Model e View
 
 ---
 
 # Algoritmos Utilizados
 
-## Inicialização da Grelha
+## 1. Inicialização da Grelha
 
-A grelha começa com todas as células desligadas.
+A grelha começa com todas as células desligadas (OFF) e com o tamanho da dificuldade selecionada.
 
-Depois disso, são realizados vários cliques aleatórios na grelha, dependendo da dificuldade escolhida (3 para a fácil, 5 para a média e 8 para a dificil), para gerar o estado inicial do puzzle.
+Depois disso, são realizados x cliques aleatórios na grelha para gerar o puzzle, onde:
+- x = 3 -> Fácil
+- x = 5 -> Médio
+- x = 8 -> Difícil
 
-## Atualização das Células
+Cada clique aleatório usa o mesmo algoritmo de inversão do estado das células que o jogador usa, garantindo assim que o puzzle é possivel de resolver.
 
-Quando o jogador seleciona uma célula:
-1. A célula selecionada muda de estado;
-2. As células adjacentes também mudam de estado (cima, esquerda, direita e baixo);
-3. O jogo verifica se todas as células estão desligadas.
+## 2. Algoritmo de Inversão (Toggle Von Neumman)
 
-## Verificação de Vitória
+Quando o jogador seleciona uma célula, o jogo usa a vizinhança de **Von Neumann**, invertendo:
+- A célula selecionada
+- A célula acima
+- A célula abaixo
+- A célula à esquerda
+- A célula à direita
 
-O jogo percorre todas as células da grelha para verificar se existem células ligadas.
+O algoritmo também verifica sempre se as coordenadas são válidas para evitar que o jogador acesse fora da grelha.
+
+## 3. Alternância de uma Célula
+Cada célula possui um estado (**ON** ou **OFF**).
+O método ```Toggle()``` simplesmente inverte o estado atual da célula selecionada e das vizinhas.
+
+## 4. Verificação de Vitória
+
+Após cada jogada, o jogo percorre todas as células da grelha para verificar se todas as células estão desligadas.
 
 Caso todas estejam desligadas, o jogador vence.
+
+## 5. Navegação na Grelha
+O jogador navega entre as células através do teclado.
+
+O Controller atualiza:
+- ```selectedRow```
+- ```selectedCol```
+
+Garantindo que estes nunca ultrapassem os limites da grelha.
+Todas as grelhas, independentemente do seu tamanho utilizam a mesma lógica.
 
 ---
 
