@@ -196,8 +196,7 @@ class Grid {
 }
 
 class Cell {
-  - CellState State
-  + Toggle()
+  + CellState State
 }
 
 class GameView {
