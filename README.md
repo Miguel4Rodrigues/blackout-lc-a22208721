@@ -99,7 +99,7 @@ O jogo disponibiliza três níveis de dificuldade:
 O projeto foi desenvolvido seguindo a abordagem **MVC (Model-View-Controller)**, no qual:
 
 ## Model
-Ficheiros: Grid.cs, Cell.cs, CellState.cs
+Ficheiros: ```Grid.cs```, ```Cell.cs```, ```CellState.cs```
 
 Responsável por:
 - Estado interno da grelha
@@ -108,7 +108,7 @@ Responsável por:
 - Verificação de vitória
 
 ## View
-Ficheiro: GameView.cs
+Ficheiro: ```GameView.cs```
 
 Responsável por:
 - Renderização da grelha
@@ -121,7 +121,7 @@ Responsável por:
 A interface é desenvolvida utilizando a biblioteca **Spectre.Console**.
 
 ## Controller
-Ficheiro: Controller.cs
+Ficheiro: ```Controller.cs```
 
 Responsável por:
 - Ciclo principal do jogo
