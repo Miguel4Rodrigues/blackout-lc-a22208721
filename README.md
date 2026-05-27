@@ -249,12 +249,12 @@ class Program {
   - static void Main()
 }
 
-Program --> Controller
-Program --> GameView
+Program ..> Controller
+Program ..> GameView
 Controller --> Grid
-Grid --> Cell
+Grid *-- Cell
 Cell --> CellState
-Controller --> GameView
+Controller ..> GameView
 ```
 
 ---
