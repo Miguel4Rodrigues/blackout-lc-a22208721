@@ -16,6 +16,8 @@ namespace Blackout
 
         private bool isRunning;
 
+        private int moveCount;
+
         /// <summary>
         /// Runs the main game loop, starting from the menu selection
         /// and continuing until the player wins or exits the game.
@@ -50,6 +52,7 @@ namespace Blackout
         /// </summary>
         private void InitializeNewGame(GameView view)
         {
+            moveCount = 0;
             size = GetGameSize(view);
             CreateGrid(size);
             view.StartGrid(grid);
@@ -65,6 +68,7 @@ namespace Blackout
             while (!grid.IsVictory() && isRunning)
             {
                 view.UpdateGrid(grid, selectedRow, selectedCol);
+                view.ShowMoveCount(moveCount);
                 HandleInput(view.ReadInputPlayer());
             }
         }
@@ -170,6 +174,7 @@ namespace Blackout
                 case ConsoleKey.Spacebar:
                 case ConsoleKey.Enter:
                     grid.ToggleVonNeumann(selectedRow, selectedCol);
+                    moveCount++;
                     break;
 
                 case ConsoleKey.Escape:
