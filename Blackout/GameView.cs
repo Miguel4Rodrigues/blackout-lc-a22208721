@@ -212,10 +212,11 @@ namespace Blackout.View
         /// <summary>
         /// Displays a victory message when the player wins the game.
         /// </summary>
-        public void ShowVictory()
+        /// <param name="moveCount">The number of moves made by the player.</param>
+        public void ShowVictory(int moveCount)
         {
             AnsiConsole.Write(
-                new Panel("[bold green]Victory![/]")
+                new Panel($"[bold green]Victory![/], with {moveCount} movements.")
                     .Border(BoxBorder.Double)
                     .Padding(2, 1)
             );
