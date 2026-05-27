@@ -58,7 +58,9 @@ O objetivo é **desligar todas as células da grelha**.
 O jogo disponibiliza três níveis de dificuldade:
 - 3x3 - Fácil
 - 5x5 - Médio
-- 8x8 - Dificil
+- 8x8 - Difícil
+
+O jogo apresenta também um **contador de movimentos**, permitindo assim que o jogador acompanhe quantas jogadas realizou até chegar à vitória.
 
 ---
 
@@ -85,9 +87,10 @@ O jogo disponibiliza três níveis de dificuldade:
 
 ![Navegação na grelha](Images/GridNavigation.png)
 
-6 - Pressiona **Enter** ou **Space** para inverter o estado da célula selecionada e as adjacentes.
+6 - Pressiona **Enter** ou **Space** para inverter o estado da célula selecionada e das adjacentes.
 
 7 - O jogo termina quando desligar todas as células, ou seja o estado **OFF**.
+Ao vencer, o jogador vê também o número total de movimentos realizados durante o jogo.
 
 ![Vitoria](Images/Victory.png)
 
@@ -117,6 +120,7 @@ Responsável por:
   - Dificuldade
 - Instruções do jogo
 - Mensagens de feedback de Vitória e de Saída
+- Painel com o número de movimentos realizados
 
 A interface é desenvolvida utilizando a biblioteca **Spectre.Console**.
 
@@ -186,31 +190,37 @@ class Grid {
   - Cell[ , ] cells
   + int Rows
   + int Columns
-  - static readonly Random
+  - static readonly Random rnd
   + Grid(int rows, int columns)
-  + ApplyRandomClicks(int clicks)
-  + ToggleVonNeumann(int row, int col)
-  + Toggle(int r, int c)
-  + IsVictory()
-  + GetCell(int row, int col)
+  + void ApplyRandomClicks(int clicks)
+  + void ToggleVonNeumann(int row, int col)
+  + void Toggle(int r, int c)
+  + bool IsVictory()
+  + Cell GetCell(int row, int col)
 }
 
 class Cell {
   + CellState State
+  + Cell(CellState state)
 }
 
 class GameView {
-  + StartGrid(grid)
-  + UpdateGrid(grid, row, col)
-  - DrawGridLines()
-  - DrawCells(grid, row, col)
-  + ShowMenu()
-  + ShowExitMessage()
-  + ShowInstructions()
-  + SelectDifficulty()
-  + ShowProgressBar(message)
-  + ReadInputPlayer()
-  + ShowVictory()
+  - Canvas canvas
+  - int width
+  - int height
+  - readonly int cellSize
+  + void StartGrid(Grid grid)
+  + void UpdateGrid(Grid grid, int row, int col)
+  - void DrawGridLines()
+  - void DrawCells(Grid grid, int selectedRow, int selectedCol)
+  + string ShowMenu()
+  + void ShowExitMessage()
+  + void ShowInstructions()
+  + void ShowMoveCount(int moveCount)
+  + string SelectDifficulty()
+  + void ShowProgressBar(string message)
+  + ConsoleKey ReadInputPlayer()
+  + void ShowVictory()
 }
 
 class Controller {
@@ -219,10 +229,14 @@ class Controller {
   - int selectedCol
   - int size
   - bool isRunning
-  + Run(view)
-  + CreateGrid(size)
-  - GetGameSize(view)
-  - HandleInput(key)
+  - int moveCount
+  + void Run(GameView view)
+  - void InitializeNewGame(GameView view)
+  - void GameLoop(GameView view)
+  - void EndGame(GameView view)
+  + void CreateGrid(int size)
+  - int GetGameSize(GameView view)
+  - void HandleInput(ConsoleKey key)
 }
 
 class CellState {
@@ -232,7 +246,7 @@ class CellState {
 }
 
 class Program {
-  + Main()
+  - static void Main()
 }
 
 Program --> Controller

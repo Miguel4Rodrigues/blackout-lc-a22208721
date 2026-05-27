@@ -13,8 +13,7 @@ namespace Blackout
         /// <summary>
         /// Program execution begins here.
         /// </summary>
-        /// <param name="args">Command-line arguments (not used).</param>
-        private static void Main(string[] args)
+        private static void Main()
         {
             // Create Controller
             Controller controller = new Controller();
