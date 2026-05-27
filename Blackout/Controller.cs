@@ -85,7 +85,7 @@ namespace Blackout
                 selectedCol = -1;
 
                 view.UpdateGrid(grid, selectedRow, selectedCol);
-                view.ShowVictory();
+                view.ShowVictory(moveCount);
             }
             else
                 view.ShowExitMessage();
