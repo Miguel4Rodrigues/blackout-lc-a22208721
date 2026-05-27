@@ -155,6 +155,20 @@ namespace Blackout.View
         }
 
         /// <summary>
+        /// Displays the current move count in a styled panel.
+        /// </summary>
+        /// <param name="moveCount">The number of moves made by the player.</param>
+        public void ShowMoveCount(int moveCount)
+        {
+            AnsiConsole.Write(
+                new Panel($"{moveCount}")
+                    .Header("[bold blue]Movements[/]")
+                    .Border(BoxBorder.Double)
+                    .Padding(6, 1)
+            );
+        }
+
+        /// <summary>
         /// Prompts the user to select a difficulty level.
         /// </summary>
         /// <returns>A string representing the selected difficulty option.</returns>
