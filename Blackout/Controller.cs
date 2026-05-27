@@ -26,17 +26,12 @@ namespace Blackout
         public void Run(GameView view)
         {
             isRunning = true;
-            
-            string option;
-            option = view.ShowMenu();
+            string option = view.ShowMenu();
 
             switch(option)
             {
                 case "[cyan]1[/] - Start New Game":
-                    GetGameSize(view);
-                    CreateGrid(size);
-                    view.StartGrid(grid);
-                    view.ShowProgressBar("Generating puzzle...");
+                    InitializeNewGame(view);
                 break;
 
                 case "[cyan]2[/] - Exit":
@@ -45,20 +40,46 @@ namespace Blackout
 
             }
 
-            // Main game loop
-            do
-            {   
-                view.UpdateGrid(grid, selectedRow, selectedCol); 
-                HandleInput(view.ReadInputPlayer());
-                
-            }while (!grid.IsVictory() && isRunning);
+            GameLoop(view);
+            EndGame(view);
+        }
 
-            // When the player wins, clears the selection highlight and renders
-            // the final solved grid before displaying the victory panel.
+        /// <summary>
+        /// Initializes a new game by selecting the difficulty,
+        /// creating the grid, and rendering the initial UI.
+        /// </summary>
+        private void InitializeNewGame(GameView view)
+        {
+            size = GetGameSize(view);
+            CreateGrid(size);
+            view.StartGrid(grid);
+            view.ShowProgressBar("Generating puzzle...");
+        }
+
+        /// <summary>
+        /// Main game loop: updates the grid and processes player input
+        /// until victory or exit.
+        /// </summary>
+        private void GameLoop(GameView view)
+        {
+            while (!grid.IsVictory() && isRunning)
+            {
+                view.UpdateGrid(grid, selectedRow, selectedCol);
+                HandleInput(view.ReadInputPlayer());
+            }
+        }
+
+        /// <summary>
+        /// Handles the end-of-game logic: clears selection and shows
+        /// the appropriate final message.
+        /// </summary>
+        private void EndGame(GameView view)
+        {
             if (grid.IsVictory())
             {
                 selectedRow = -1;
                 selectedCol = -1;
+
                 view.UpdateGrid(grid, selectedRow, selectedCol);
                 view.ShowVictory();
             }
