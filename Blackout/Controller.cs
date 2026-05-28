@@ -17,6 +17,9 @@ namespace Blackout
         private bool isRunning;
 
         private int moveCount;
+        private GameDifficulty difficulty;
+        private int? currentHighScore;
+        private HighScoreManager highScoreManager = new HighScoreManager();
 
         /// <summary>
         /// Runs the main game loop, starting from the menu selection
@@ -53,7 +56,9 @@ namespace Blackout
         private void InitializeNewGame(GameView view)
         {
             moveCount = 0;
-            size = GetGameSize(view);
+            difficulty = GetGameDifficulty(view);
+            size = difficulty.GetSize();
+            currentHighScore = highScoreManager.GetHighScore(difficulty);
             CreateGrid(size);
             view.StartGrid(grid);
             view.ShowProgressBar("Generating puzzle...");
@@ -67,7 +72,7 @@ namespace Blackout
         {
             while (!grid.IsVictory() && isRunning)
             {
-                view.UpdateGrid(grid, selectedRow, selectedCol);
+                view.UpdateGrid(grid, selectedRow, selectedCol, difficulty, currentHighScore);
                 view.ShowMoveCount(moveCount);
                 HandleInput(view.ReadInputPlayer());
             }
@@ -142,8 +147,6 @@ namespace Blackout
                     size = 8;
                     break;
             }
-
-            return size;
         }
         
         /// <summary>
