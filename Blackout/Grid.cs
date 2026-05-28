@@ -62,7 +62,7 @@ namespace Blackout
         
         /// <summary>
         /// Toggle the state of the selected cell and its 
-        /// four orthogonal neighbors (Von Neumman neighborhood).
+        /// eight orthogonal and diagonal neighbors (Von Neumann neighborhood).
         /// </summary>
         /// <param name="row">The row index of the central cell.</param>
         /// <param name="column">The column index of the central cell.</param>
@@ -76,6 +76,10 @@ namespace Blackout
             Toggle(row + 1, column); // DOWN
             Toggle(row, column - 1); // LEFT
             Toggle(row, column + 1); // RIGHT
+            Toggle(row + 1, column + 1); // DOWN-RIGHT
+            Toggle(row - 1, column + 1); // UP-RIGHT
+            Toggle(row + 1, column - 1); // DOWN-LEFT
+            Toggle(row - 1, column - 1); // UP-LEFT
         }
 
         /// <summary>
