@@ -50,3 +50,75 @@ namespace Blackout
             highScores = LoadHighScores();
         }
 
+        public int? GetHighScore(GameDifficulty difficulty)
+        {
+            return difficulty switch
+            {
+                GameDifficulty.Easy => highScores.Easy,
+                GameDifficulty.Medium => highScores.Medium,
+                GameDifficulty.Hard => highScores.Hard,
+                _ => null,
+            };
+        }
+
+        public bool TryUpdateHighScore(GameDifficulty difficulty, int moves)
+        {
+            int? current = GetHighScore(difficulty);
+            if (!current.HasValue || moves < current.Value)
+            {
+                switch (difficulty)
+                {
+                    case GameDifficulty.Easy:
+                        highScores.Easy = moves;
+                        break;
+                    case GameDifficulty.Medium:
+                        highScores.Medium = moves;
+                        break;
+                    case GameDifficulty.Hard:
+                        highScores.Hard = moves;
+                        break;
+                }
+
+                SaveHighScores();
+                return true;
+            }
+
+            return false;
+        }
+
+        private HighScoreData LoadHighScores()
+        {
+            try
+            {
+                if (!File.Exists(filePath))
+                    return new HighScoreData();
+
+                string json = File.ReadAllText(filePath);
+                return JsonSerializer.Deserialize<HighScoreData>(json) ?? new HighScoreData();
+            }
+            catch
+            {
+                return new HighScoreData();
+            }
+        }
+
+        private void SaveHighScores()
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string json = JsonSerializer.Serialize(highScores, options);
+            File.WriteAllText(filePath, json);
+        }
+
+        private class HighScoreData
+        {
+            [JsonPropertyName("easy")]
+            public int? Easy { get; set; }
+
+            [JsonPropertyName("medium")]
+            public int? Medium { get; set; }
+
+            [JsonPropertyName("hard")]
+            public int? Hard { get; set; }
+        }
+    }
+}
