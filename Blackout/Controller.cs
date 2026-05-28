@@ -89,8 +89,12 @@ namespace Blackout
                 selectedRow = -1;
                 selectedCol = -1;
 
-                view.UpdateGrid(grid, selectedRow, selectedCol);
-                view.ShowVictory(moveCount);
+                bool isNewRecord = highScoreManager.TryUpdateHighScore(difficulty, moveCount);
+                if (isNewRecord)
+                    currentHighScore = moveCount;
+
+                view.UpdateGrid(grid, selectedRow, selectedCol, difficulty, currentHighScore);
+                view.ShowVictory(moveCount, isNewRecord, currentHighScore);
             }
             else
                 view.ShowExitMessage();
@@ -129,23 +133,22 @@ namespace Blackout
 
         /// <summary>
         /// Asks the player to select a difficulty level and returns
-        /// the corresponding grid size.
+        /// the selected difficulty.
         /// </summary>
         /// <param name="view">The view used to display the difficulty menu.</param>
-        /// <returns>The selected grid size (3, 5, or 8).</returns>
-        private int GetGameSize(GameView view)
+        /// <returns>The selected difficulty.</returns>
+        private GameDifficulty GetGameDifficulty(GameView view)
         {
             switch (view.SelectDifficulty())
             {
                 case "1 - Easy (3x3)":
-                    size = 3;
-                    break;
+                    return GameDifficulty.Easy;
                 case "2 - Medium (5x5)":
-                    size = 5;
-                    break;
+                    return GameDifficulty.Medium;
                 case "3 - Hard (8x8)":
-                    size = 8;
-                    break;
+                    return GameDifficulty.Hard;
+                default:
+                    return GameDifficulty.Easy;
             }
         }
         
