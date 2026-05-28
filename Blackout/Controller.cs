@@ -79,8 +79,8 @@ namespace Blackout
         }
 
         /// <summary>
-        /// Handles the end-of-game logic: clears selection and shows
-        /// the appropriate final message.
+        /// Checks if the player has won the game and updates the high score if necessary,
+        /// then displays either the victory screen or the exit message based on the game outcome.
         /// </summary>
         private void EndGame(GameView view)
         {

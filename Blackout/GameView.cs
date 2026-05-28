@@ -37,7 +37,7 @@ namespace Blackout.View
 
         /// <summary>
         /// Renders the current state of the grid, including cell colors,
-        /// grid lines, and the selected cell highlight.
+        /// grid lines, and the selected cell highlight. Also displays instructions and high score information.
         /// </summary>
         /// <param name="grid">The grid containing the cell states to display.</param>
         /// <param name="selectedRow">The row index of the currently selected cell.</param>
@@ -231,7 +231,7 @@ namespace Blackout.View
         public ConsoleKey ReadInputPlayer() => Console.ReadKey(true).Key;
 
         /// <summary>
-        /// Displays a victory message when the player wins the game.
+        /// Displays a victory message when the player wins, including the move count and whether a new high score was achieved.
         /// </summary>
         /// <param name="moveCount">The number of moves made by the player.</param>
         /// <param name="isNewRecord">Whether the result is a new high score.</param>

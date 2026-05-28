@@ -5,6 +5,9 @@ using System.Text.Json.Serialization;
 
 namespace Blackout
 {
+    /// <summary>
+    /// Represents the different difficulty levels of the game, which determine the size of the grid and the complexity of the puzzle.
+    /// </summary>
     public enum GameDifficulty
     {
         Easy,
@@ -12,8 +15,16 @@ namespace Blackout
         Hard
     }
 
+    /// <summary>
+    /// Provides extension methods for the GameDifficulty enum to retrieve associated properties like grid size and display labels.
+    /// </summary>
     public static class GameDifficultyExtensions
     {
+        /// <summary>
+        /// Returns the grid size associated with each difficulty level, which is used to create the game grid and determine the number of cells.
+        /// </summary>
+        /// <param name="difficulty">The game difficulty level.</param>
+        /// <returns>The grid size for the specified difficulty.</returns>
         public static int GetSize(this GameDifficulty difficulty)
         {
             return difficulty switch
@@ -25,6 +36,11 @@ namespace Blackout
             };
         }
 
+        /// <summary>
+        /// Returns the display label associated with each difficulty level.
+        /// </summary>
+        /// <param name="difficulty">The game difficulty level.</param>
+        /// <returns>The display label for the specified difficulty.</returns>
         public static string GetLabel(this GameDifficulty difficulty)
         {
             return difficulty switch
@@ -37,6 +53,9 @@ namespace Blackout
         }
     }
 
+    /// <summary>
+    /// Manages the high scores for each difficulty level by loading and saving them to a JSON file in the user's local application data folder.
+    /// </summary>
     public class HighScoreManager
     {
         private readonly string filePath;
@@ -50,6 +69,11 @@ namespace Blackout
             highScores = LoadHighScores();
         }
 
+        /// <summary>
+        /// Retrieves the current high score for the specified difficulty level, or null if no score is recorded.
+        /// </summary>
+        /// <param name="difficulty">The game difficulty level.</param>
+        /// <returns>The high score for the specified difficulty, or null if no score is recorded.</returns>
         public int? GetHighScore(GameDifficulty difficulty)
         {
             return difficulty switch
@@ -61,6 +85,12 @@ namespace Blackout
             };
         }
 
+        /// <summary>
+        /// Attempts to update the high score for the specified difficulty level.
+        /// </summary>
+        /// <param name="difficulty">The game difficulty level.</param>
+        /// <param name="moves">The number of moves to compare against the current high score.</param>
+        /// <returns>true if the high score was updated; otherwise, false.</returns>
         public bool TryUpdateHighScore(GameDifficulty difficulty, int moves)
         {
             int? current = GetHighScore(difficulty);
@@ -86,6 +116,10 @@ namespace Blackout
             return false;
         }
 
+        /// <summary>
+        /// Loads the high scores from the JSON file. If the file does not exist or cannot be read, returns a new HighScoreData instance with null values.
+        /// </summary>
+        /// <returns>The loaded high score data, or a new instance if loading fails.</returns>
         private HighScoreData LoadHighScores()
         {
             try
@@ -102,6 +136,9 @@ namespace Blackout
             }
         }
 
+        /// <summary>
+        /// Saves the high scores to the JSON file.
+        /// </summary>
         private void SaveHighScores()
         {
             var options = new JsonSerializerOptions { WriteIndented = true };
@@ -109,6 +146,9 @@ namespace Blackout
             File.WriteAllText(filePath, json);
         }
 
+        /// <summary>
+        /// Represents the structure of the high score data stored in the JSON file, with properties for each difficulty level. Each property is nullable to indicate that no score has been recorded yet.
+        /// </summary>
         private class HighScoreData
         {
             [JsonPropertyName("easy")]
