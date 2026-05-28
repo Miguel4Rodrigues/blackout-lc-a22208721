@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using Blackout;
 using Spectre.Console;
 
 namespace Blackout.View
@@ -41,10 +42,13 @@ namespace Blackout.View
         /// <param name="grid">The grid containing the cell states to display.</param>
         /// <param name="selectedRow">The row index of the currently selected cell.</param>
         /// <param name="selectedCol">The column index of the currently selected cell.</param>
-        public void UpdateGrid(Grid grid, int selectedRow, int selectedCol)
+        /// <param name="difficulty">The current game difficulty.</param>
+        /// <param name="highScore">The best score for the current difficulty.</param>
+        public void UpdateGrid(Grid grid, int selectedRow, int selectedCol, GameDifficulty difficulty, int? highScore)
         {
             AnsiConsole.Clear();
             ShowInstructions();
+            ShowHighScore(difficulty, highScore);
 
             DrawGridLines();
             DrawCells(grid, selectedRow, selectedCol);
@@ -169,6 +173,23 @@ namespace Blackout.View
         }
 
         /// <summary>
+        /// Displays the current high score for the selected difficulty.
+        /// </summary>
+        /// <param name="difficulty">The current difficulty.</param>
+        /// <param name="highScore">The best score for this difficulty.</param>
+        public void ShowHighScore(GameDifficulty difficulty, int? highScore)
+        {
+            string scoreText = highScore.HasValue ? $"{highScore.Value} moves" : "No record yet";
+
+            AnsiConsole.Write(
+                new Panel($"[white]Difficulty:[/] [green]{difficulty.GetLabel()}[/]\n[white]Best:[/] [yellow]{scoreText}[/]")
+                    .Header("[bold yellow]High Score[/]")
+                    .Border(BoxBorder.Double)
+                    .Padding(1, 1)
+            );
+        }
+
+        /// <summary>
         /// Prompts the user to select a difficulty level.
         /// </summary>
         /// <returns>A string representing the selected difficulty option.</returns>
@@ -213,10 +234,14 @@ namespace Blackout.View
         /// Displays a victory message when the player wins the game.
         /// </summary>
         /// <param name="moveCount">The number of moves made by the player.</param>
-        public void ShowVictory(int moveCount)
+        /// <param name="isNewRecord">Whether the result is a new high score.</param>
+        /// <param name="highScore">The best score for this difficulty after the game.</param>
+        public void ShowVictory(int moveCount, bool isNewRecord, int? highScore)
         {
+            string recordText = isNewRecord ? "[bold green]New record![/]" : $"Best score: [yellow]{highScore?.ToString() ?? "none"}[/] moves.";
+
             AnsiConsole.Write(
-                new Panel($"[bold green]Victory![/], with {moveCount} movements.")
+                new Panel($"[bold green]Victory![/] with {moveCount} movements.\n\n{recordText}")
                     .Border(BoxBorder.Double)
                     .Padding(2, 1)
             );
